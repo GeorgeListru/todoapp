@@ -1,0 +1,32 @@
+@import "../../App.scss";
+
+.NavBar {
+	width: 60%;
+	margin: 0 auto;
+	font-family: "Dosis", sans-serif;
+	display: flex;
+}
+.Logo {
+	margin-top: auto;
+	font-weight: 800;
+	color: $yellow-color;
+	font-size: 1.8rem;
+	margin-right: auto;
+	transition: all 0.3s ease-in-out;
+	&:hover {
+		color: $yellow-color;
+		opacity: 0.9;
+	}
+}
+.Control-Link {
+	margin-top: auto;
+	font-weight: 700;
+	color: $yellow-color;
+	font-size: 1.2rem;
+	margin-left: auto;
+	transition: all 0.3s ease-in-out;
+	&:hover {
+		color: $yellow-color;
+		opacity: 0.9;
+	}
+}

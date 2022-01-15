@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@600;700;800&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  color: white;
+}
+
+body {
+  background-color: #219653;
+}
+
+.NavBar {
+  width: 60%;
+  margin: 0 auto;
+  font-family: "Dosis", sans-serif;
+  display: flex;
+}
+
+.Logo {
+  margin-top: auto;
+  font-weight: 800;
+  color: #ffd43b;
+  font-size: 1.8rem;
+  margin-right: auto;
+  transition: all 0.3s ease-in-out;
+}
+.Logo:hover {
+  color: #ffd43b;
+  opacity: 0.9;
+}
+
+.Control-Link {
+  margin-top: auto;
+  font-weight: 700;
+  color: #ffd43b;
+  font-size: 1.2rem;
+  margin-left: auto;
+  transition: all 0.3s ease-in-out;
+}
+.Control-Link:hover {
+  color: #ffd43b;
+  opacity: 0.9;
+}
