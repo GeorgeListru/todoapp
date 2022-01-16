@@ -6,6 +6,7 @@
 
 a {
   text-decoration: none;
+  color: white;
 }
 
 a:hover {
@@ -16,6 +17,27 @@ body {
   background-color: #219653;
   width: 100%;
   height: 100%;
+  overflow-y: hidden;
+}
+
+.nav-link {
+  color: #ffd43b !important;
+}
+
+hr {
+  margin: 0;
+  padding: 0;
+}
+
+.col {
+  padding: 0 !important;
+}
+
+.row-fullwidth {
+  --bs-gutter-x: 1.5rem !important;
+  margin-top: 0;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .NavBar {
@@ -55,5 +77,91 @@ body {
 .Control-Link:hover {
   color: #ffd43b;
   opacity: 0.9;
+}
+
+.Profile-Link {
+  color: #ffd43b !important;
+  margin-top: auto;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-left: auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: transparent;
+  border: none;
+}
+
+.Profile-Link:hover {
+  color: #ffd43b;
+  opacity: 0.9;
+}
+
+.profile-dropdown {
+  position: relative;
+  margin-top: auto;
+}
+
+.profile-dropdown-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: absolute;
+  top: 2.2rem;
+  background-color: #27ae60;
+  border-radius: 0.15rem;
+  -webkit-box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+  width: 11rem;
+  left: -2.25rem;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transform: translateY(-0.2rem);
+          transform: translateY(-0.2rem);
+  -webkit-transition: opacity 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
+  transition: opacity 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
+}
+
+.profile-dropdown-menu-active {
+  pointer-events: auto;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  opacity: 1;
+}
+
+.profile-arrow {
+  font-size: 0.8rem !important;
+  margin-left: 0.1rem !important;
+  font-weight: 900;
+  -webkit-transition: -webkit-transform 0.15s ease-in-out;
+  transition: -webkit-transform 0.15s ease-in-out;
+  transition: transform 0.15s ease-in-out;
+  transition: transform 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
+  vertical-align: center;
+}
+
+.profile-arrow-active {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.profile-dropdown-item {
+  cursor: pointer;
+  text-align: center;
+  color: white;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  padding: 0.25rem 0;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.profile-dropdown-item:hover {
+  background-color: #219653;
 }
 /*# sourceMappingURL=Header-Styles.css.map */

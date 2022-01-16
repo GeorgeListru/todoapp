@@ -9,5 +9,5 @@ class ToDoItem(models.Model):
 
     def __str__(self):
         if len(self.title)>25:
-            return self.title+"..."
-        return self.title
+            return self.user.username +": " + self.title+"..."
+        return self.user.username +": " + self.title

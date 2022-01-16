@@ -30,3 +30,69 @@
 		opacity: 0.9;
 	}
 }
+
+.Profile-Link {
+	color: $yellow-color !important;
+	margin-top: auto;
+	font-weight: 700;
+	font-size: 1.2rem;
+	margin-left: auto;
+	transition: all 0.3s ease-in-out;
+	background-color: transparent;
+	border: none;
+	&:hover {
+		color: $yellow-color;
+		opacity: 0.9;
+	}
+}
+.profile-dropdown {
+	position: relative;
+	margin-top: auto;
+}
+.profile-dropdown-menu {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 2.2rem;
+	background-color: $light-green-color;
+	border-radius: 0.15rem;
+	box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+	width: 11rem;
+	left: -2.25rem;
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(-0.2rem);
+	transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+.profile-dropdown-menu-active {
+	pointer-events: auto;
+	transform: translateY(0);
+	opacity: 1;
+}
+.profile-arrow {
+	font-size: 0.8rem !important;
+	margin-left: 0.1rem !important;
+	font-weight: 900;
+	transition: transform 0.15s ease-in-out;
+	vertical-align: center;
+}
+.profile-arrow-active {
+	transform: rotate(90deg);
+}
+.profile-dropdown-item {
+	cursor: pointer;
+	text-align: center;
+	color: white;
+	font-family: "Dosis", sans-serif;
+	font-weight: 500;
+	padding: 0.25rem 0;
+	transition: background-color 0.2s ease-in-out;
+	&:hover {
+		background-color: $green-color;
+	}
+}
+// .profile-dropdown > .Profile-Link:focus + .profile-dropdown-menu {
+// 	pointer-events: auto;
+// 	transform: translateY(0);
+// 	opacity: 1;
+// }

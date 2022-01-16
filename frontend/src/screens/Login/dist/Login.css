@@ -19,7 +19,16 @@ body {
   height: 100%;
 }
 
-.auth-header {
+.nav-link {
+  color: #ffd43b !important;
+}
+
+hr {
+  margin: 0;
+  padding: 0;
+}
+
+.h1-header {
   text-align: center;
   font-family: "Dosis", sans-serif;
   font-weight: 600;
