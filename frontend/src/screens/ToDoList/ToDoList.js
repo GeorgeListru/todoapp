@@ -4,12 +4,26 @@ import axios from "axios";
 import "./ToDoList.css";
 import { Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
+import ToDoTask from "./ToDoTask";
+import { Spinner } from "react-bootstrap";
+import TaskShowModal from "./TaskShowModal";
 function ToDoList() {
 	const [tasksList, setTasksList] = useState([]);
+	const [isLoadingToDoList, setIsLoadingToDoList] = useState(false);
 	const userData = useSelector((state) => state.login);
+
+	function formatTaskData(task) {
+		const date = new Date(task.createdAt);
+		task.createdAt = `${date.getDate()}/
+		${date.getMonth() + 1}/${date.getFullYear()}`;
+		task = { ...task, showDeleteBtn: false, changingStatus: false };
+		return task;
+	}
+
 	useEffect(() => {
 		async function GetToDoListRequest() {
+			setIsLoadingToDoList(true);
 			const config = {
 				headers: {
 					"Content-Type": "application/json",
@@ -20,27 +34,50 @@ function ToDoList() {
 			if (response.request.status === 200) {
 				let tasks = response.data;
 				for (let i = 0; i < tasks.length; i++) {
-					const date = new Date(tasks[i].createdAt);
-					tasks[i].createdAt = `${date.getDate()}/${
-						date.getMonth() + 1
-					}/${date.getFullYear()}`;
-					tasks[i] = { ...tasks[i], showDeleteBtn: true };
+					tasks[i] = formatTaskData(tasks[i]);
 				}
+				setIsLoadingToDoList(false);
 				setTasksList(tasks);
 			}
 		}
 		GetToDoListRequest();
 	}, []);
-
 	function setItemCompletedHandler(id) {
-		let copyTasksList = [...tasksList];
-		for (let i = 0; i < copyTasksList.length; i++) {
-			if (copyTasksList[i].id == id) {
-				copyTasksList[i].isCompleted = true;
+		async function changeCompletedStatusRequest() {
+			const config = {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + userData.token,
+				},
+			};
+			const body = { id };
+			const response = await axios.post(
+				"todolist/changecompleted",
+				body,
+				config
+			);
+			if (response.request.status == 200) {
+				let copyTasksList = [...tasksList];
+				for (let i = 0; i < copyTasksList.length; i++) {
+					if (copyTasksList[i].id == id) {
+						copyTasksList[i].changingStatus = true;
+					}
+				}
+				setTasksList(copyTasksList);
+				const setCompletedTimeout = setTimeout(() => {
+					for (let i = 0; i < copyTasksList.length; i++) {
+						if (copyTasksList[i].id == id) {
+							copyTasksList[i].changingStatus = false;
+							copyTasksList[i].isCompleted = !copyTasksList[i].isCompleted;
+							copyTasksList[i].showDeleteBtn = false;
+						}
+					}
+					setTasksList(copyTasksList);
+				}, 500);
+				return () => clearTimeout(setCompletedTimeout);
 			}
 		}
-		setTasksList(copyTasksList);
-		console.log("modified");
+		changeCompletedStatusRequest();
 	}
 
 	function showDeleteButtonHandler(id) {
@@ -81,55 +118,101 @@ function ToDoList() {
 			const response = await axios.post("todolist/additem", body, config);
 			if (response.request.status == 200) {
 				setEnterItemMode(false);
+				const task = formatTaskData(response.data);
+				setTasksList([task, ...tasksList]);
+				setEnteredTitle("");
 			}
 		}
 		AddItemToDoListRequest();
 	}
+
+	function deleteItemHandler(id) {
+		async function DeleteItemRequest() {
+			const config = {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + userData.token,
+				},
+			};
+			const body = { id };
+			const response = await axios.post("todolist/delete", body, config);
+			if (response.request.status == 200) {
+				const filteredTasksList = tasksList.filter((task) => task.id != id);
+				setTasksList(filteredTasksList);
+			}
+		}
+		DeleteItemRequest();
+	}
+	const [tab, setTab] = useState("todo");
+	function changeTabHandler() {
+		if (tab == "todo") setTab("completed");
+		else setTab("todo");
+	}
+	const [selectedToShowModal, setSelectedToShowModal] = useState(null);
+	function selectTaskToShowModalHandler(id) {
+		const task = tasksList.filter((task) => task.id == id)[0];
+		setSelectedToShowModal(task);
+	}
 	return (
 		<div>
 			<div className="h1-header">TO DO LIST</div>
+			<TaskShowModal className="hidden" task={selectedToShowModal} taskSetter={setSelectedToShowModal} />
+			<div className="todolist-tabs">
+				<div
+					className={`tabline ${
+						tab === "completed" ? "tabline-down" : "tabline-up"
+					}`}
+				></div>
+				<div
+					onClick={changeTabHandler}
+					to="/todolist"
+					className={`todolist-tab-page ${
+						tab === "todo" ? "todolist-tabs-current-page" : ""
+					}`}
+				>
+					To Do
+				</div>
+				<div
+					onClick={changeTabHandler}
+					className={`todolist-tab-page ${
+						tab === "completed" ? "todolist-tabs-current-page" : ""
+					}`}
+					to="todolist/completed"
+				>
+					Completed
+				</div>
+			</div>
 			<div className="todolist">
-				{tasksList.map((task) => {
-					return (
-						<div
-							className="todolist-item"
-							onClick={() => setItemCompletedHandler(task.id)}
-							onMouseEnter={() => showDeleteButtonHandler(task.id)}
-							onMouseLeave={() => hideDeleteButtonHandler(task.id)}
-						>
-							<Row className="row-fullwidth">
-								<Col md={1} className="col">
-									{(task.isCompleted && (
-										<i class="fas fa-check-circle todolist-item-circle"></i>
-									)) || <i class="fas fa-circle todolist-item-circle"></i>}
-								</Col>
-								<Col md={8} className="col">
-									<div
-										class={`todolist-item-title ${
-											task.isCompleted ? "strike" : ""
-										}`}
-									>
-										{task.title}
-									</div>
-								</Col>
-								<Col md={3} className="col right-section">
-									<div
-										className={`todolist-item-created-date ${
-											task.showDeleteBtn ? "date-hover" : ""
-										}`}
-									>
-										{task.createdAt}
-									</div>
-									<i
-										className={`fas fa-trash todolist-item-trashcan ${
-											task.showDeleteBtn ? "trashcan-hover" : ""
-										}`}
-									></i>
-								</Col>
-							</Row>
-						</div>
-					);
-				})}
+				{(isLoadingToDoList && (
+					<div className="Loading-Spinner">
+						<Spinner animation="border" variant="warning" />
+					</div>
+				)) ||
+					tasksList.map((task) => {
+						if (tab == "todo" && !task.isCompleted) {
+							return (
+								<ToDoTask
+									task={task}
+									showDeleteButtonHandler={showDeleteButtonHandler}
+									hideDeleteButtonHandler={hideDeleteButtonHandler}
+									setItemCompletedHandler={setItemCompletedHandler}
+									deleteItemHandler={deleteItemHandler}
+									selectTaskToShowModalHandler={selectTaskToShowModalHandler}
+								/>
+							);
+						} else if (tab == "completed" && task.isCompleted) {
+							return (
+								<ToDoTask
+									task={task}
+									showDeleteButtonHandler={showDeleteButtonHandler}
+									hideDeleteButtonHandler={hideDeleteButtonHandler}
+									setItemCompletedHandler={setItemCompletedHandler}
+									deleteItemHandler={deleteItemHandler}
+									selectTaskToShowModalHandler={selectTaskToShowModalHandler}
+								/>
+							);
+						}
+					})}
 			</div>
 			<div
 				className={`add-to-do-item-button ${
@@ -147,7 +230,11 @@ function ToDoList() {
 								className="enter-task-input"
 								value={enteredTitle}
 								onChange={(e) => setEnteredTitle(e.target.value)}
-								maxlength="48"
+								maxlength="64"
+								autoFocus
+								onKeyDown={(e) => {
+									e.key === "Enter" && addItemHandler();
+								}}
 							/>
 						</Col>
 						<Col md={1} className="col" onClick={addItemHandler}>

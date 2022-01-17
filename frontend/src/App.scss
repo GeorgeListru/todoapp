@@ -43,3 +43,11 @@ hr {
 	margin-right: 0;
 	margin-left: 0;
 }
+.disable-cursor {
+	pointer-events: none;
+	cursor: auto;
+}
+.Loading-Spinner {
+	width: 100%;
+	text-align: center;
+}

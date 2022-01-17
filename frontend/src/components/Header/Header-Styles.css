@@ -40,6 +40,16 @@ hr {
   margin-left: 0;
 }
 
+.disable-cursor {
+  pointer-events: none;
+  cursor: auto;
+}
+
+.Loading-Spinner {
+  width: 100%;
+  text-align: center;
+}
+
 .NavBar {
   width: 60%;
   margin: 0 auto;
