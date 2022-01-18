@@ -48,7 +48,7 @@ def GetUserProfile(request):
 @permission_classes([IsAuthenticated])
 def GetUserToDoList(request):
     user = request.user
-    todoList=ToDoItem.objects.filter(user= user)
+    todoList=ToDoItem.objects.filter(user= user).order_by('-createdAt')
     listSerializer = ToDoItemSerializer(todoList, many=True)
     return Response(listSerializer.data)
 
@@ -63,3 +63,32 @@ def AddInToDoList(request):
     )
     serializedToDoItem = ToDoItemSerializer(todoItem, many=False)
     return Response(serializedToDoItem.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def RemoveItemFromToDoList(request):
+    user = request.user
+    item_id = request.data['id']
+    todoList=ToDoItem.objects.filter(user=user)
+    toDeleteItem = ToDoItem.objects.get(pk=item_id)
+    if toDeleteItem in todoList:
+        toDeleteItem.delete()
+        message = {'message': 'Item no. '+str(item_id)+ " was deleted successfully!"}
+        return Response(message, status=status.HTTP_200_OK)
+    message = {'message': "No Authorization provided"}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def ChangeCompletedStatus(request):
+    user = request.user
+    item_id = request.data['id']
+    todoList=ToDoItem.objects.filter(user=user)
+    toModifyItem = ToDoItem.objects.get(pk=item_id)
+    if toModifyItem in todoList:
+        toModifyItem.isCompleted = not(toModifyItem.isCompleted)
+        toModifyItem.save()
+        serializedToDoItem = ToDoItemSerializer(toModifyItem, many=False)
+        return Response(serializedToDoItem.data)
+    message = {'message':'No Authorization provided'}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
