@@ -3,21 +3,26 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ToDoList.css";
 import { Row, Col } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import ToDoTask from "./ToDoTask";
 import { Spinner } from "react-bootstrap";
 import TaskShowModal from "./TaskShowModal";
+import { setTasks } from "../../store/TasksListReducer";
 function ToDoList() {
-	const [tasksList, setTasksList] = useState([]);
 	const [isLoadingToDoList, setIsLoadingToDoList] = useState(false);
 	const userData = useSelector((state) => state.login);
-
+	const tasksList = useSelector((state) => state.tasks);
+	const dispatch = useDispatch();
 	function formatTaskData(task) {
 		const date = new Date(task.createdAt);
 		task.createdAt = `${date.getDate()}/
 		${date.getMonth() + 1}/${date.getFullYear()}`;
-		task = { ...task, showDeleteBtn: false, changingStatus: false };
+		task = {
+			...task,
+			showDeleteBtn: false,
+			changingStatus: false,
+			showModal: false,
+		};
 		return task;
 	}
 
@@ -37,67 +42,11 @@ function ToDoList() {
 					tasks[i] = formatTaskData(tasks[i]);
 				}
 				setIsLoadingToDoList(false);
-				setTasksList(tasks);
+				dispatch(setTasks(tasks));
 			}
 		}
 		GetToDoListRequest();
 	}, []);
-	function setItemCompletedHandler(id) {
-		async function changeCompletedStatusRequest() {
-			const config = {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Bearer " + userData.token,
-				},
-			};
-			const body = { id };
-			const response = await axios.post(
-				"todolist/changecompleted",
-				body,
-				config
-			);
-			if (response.request.status == 200) {
-				let copyTasksList = [...tasksList];
-				for (let i = 0; i < copyTasksList.length; i++) {
-					if (copyTasksList[i].id == id) {
-						copyTasksList[i].changingStatus = true;
-					}
-				}
-				setTasksList(copyTasksList);
-				const setCompletedTimeout = setTimeout(() => {
-					for (let i = 0; i < copyTasksList.length; i++) {
-						if (copyTasksList[i].id == id) {
-							copyTasksList[i].changingStatus = false;
-							copyTasksList[i].isCompleted = !copyTasksList[i].isCompleted;
-							copyTasksList[i].showDeleteBtn = false;
-						}
-					}
-					setTasksList(copyTasksList);
-				}, 500);
-				return () => clearTimeout(setCompletedTimeout);
-			}
-		}
-		changeCompletedStatusRequest();
-	}
-
-	function showDeleteButtonHandler(id) {
-		let copyTasksList = [...tasksList];
-		for (let i = 0; i < copyTasksList.length; i++) {
-			if (copyTasksList[i].id == id) {
-				copyTasksList[i].showDeleteBtn = true;
-			}
-		}
-		setTasksList(copyTasksList);
-	}
-	function hideDeleteButtonHandler(id) {
-		let copyTasksList = [...tasksList];
-		for (let i = 0; i < copyTasksList.length; i++) {
-			if (copyTasksList[i].id == id) {
-				copyTasksList[i].showDeleteBtn = false;
-			}
-		}
-		setTasksList(copyTasksList);
-	}
 
 	const [enterItemMode, setEnterItemMode] = useState(false);
 	function enterItemHandler() {
@@ -119,44 +68,23 @@ function ToDoList() {
 			if (response.request.status == 200) {
 				setEnterItemMode(false);
 				const task = formatTaskData(response.data);
-				setTasksList([task, ...tasksList]);
+				dispatch(setTasks([task, ...tasksList]));
 				setEnteredTitle("");
 			}
 		}
 		AddItemToDoListRequest();
 	}
 
-	function deleteItemHandler(id) {
-		async function DeleteItemRequest() {
-			const config = {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Bearer " + userData.token,
-				},
-			};
-			const body = { id };
-			const response = await axios.post("todolist/delete", body, config);
-			if (response.request.status == 200) {
-				const filteredTasksList = tasksList.filter((task) => task.id != id);
-				setTasksList(filteredTasksList);
-			}
-		}
-		DeleteItemRequest();
-	}
 	const [tab, setTab] = useState("todo");
 	function changeTabHandler() {
 		if (tab == "todo") setTab("completed");
 		else setTab("todo");
 	}
-	const [selectedToShowModal, setSelectedToShowModal] = useState(null);
-	function selectTaskToShowModalHandler(id) {
-		const task = tasksList.filter((task) => task.id == id)[0];
-		setSelectedToShowModal(task);
-	}
+
 	return (
 		<div>
 			<div className="h1-header">TO DO LIST</div>
-			<TaskShowModal className="hidden" task={selectedToShowModal} taskSetter={setSelectedToShowModal} />
+			<TaskShowModal />
 			<div className="todolist-tabs">
 				<div
 					className={`tabline ${
@@ -190,27 +118,9 @@ function ToDoList() {
 				)) ||
 					tasksList.map((task) => {
 						if (tab == "todo" && !task.isCompleted) {
-							return (
-								<ToDoTask
-									task={task}
-									showDeleteButtonHandler={showDeleteButtonHandler}
-									hideDeleteButtonHandler={hideDeleteButtonHandler}
-									setItemCompletedHandler={setItemCompletedHandler}
-									deleteItemHandler={deleteItemHandler}
-									selectTaskToShowModalHandler={selectTaskToShowModalHandler}
-								/>
-							);
+							return <ToDoTask key={task.id} taskID={task.id} task={task} />;
 						} else if (tab == "completed" && task.isCompleted) {
-							return (
-								<ToDoTask
-									task={task}
-									showDeleteButtonHandler={showDeleteButtonHandler}
-									hideDeleteButtonHandler={hideDeleteButtonHandler}
-									setItemCompletedHandler={setItemCompletedHandler}
-									deleteItemHandler={deleteItemHandler}
-									selectTaskToShowModalHandler={selectTaskToShowModalHandler}
-								/>
-							);
+							return <ToDoTask key={task.id} taskID={task.id} task={task} />;
 						}
 					})}
 			</div>
@@ -238,11 +148,11 @@ function ToDoList() {
 							/>
 						</Col>
 						<Col md={1} className="col" onClick={addItemHandler}>
-							<i class="fas fa-arrow-up add-to-list-icon"></i>
+							<i className="fas fa-arrow-up add-to-list-icon"></i>
 						</Col>
 					</Row>
 				) : (
-					<i class="fas fa-plus add-todo-item-icon"></i>
+					<i className="fas fa-plus add-todo-item-icon"></i>
 				)}
 			</div>
 		</div>

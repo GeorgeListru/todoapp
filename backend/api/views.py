@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.models import User
@@ -7,6 +8,7 @@ from rest_framework import status
 from .serializers import UserSerializer, MyTokenObtainPairSerializer,UserSerializerWithToken, ToDoItemSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import ToDoItem
+from django.utils import timezone
 
 @api_view(['POST'])
 def RegisterUser(request):
@@ -87,6 +89,10 @@ def ChangeCompletedStatus(request):
     toModifyItem = ToDoItem.objects.get(pk=item_id)
     if toModifyItem in todoList:
         toModifyItem.isCompleted = not(toModifyItem.isCompleted)
+        if toModifyItem.isCompleted == True:
+            toModifyItem.completedAt = timezone.now()
+        else:
+            toModifyItem.completedAt = None
         toModifyItem.save()
         serializedToDoItem = ToDoItemSerializer(toModifyItem, many=False)
         return Response(serializedToDoItem.data)

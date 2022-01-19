@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@500;600;700;800&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -50,6 +51,259 @@ hr {
   text-align: center;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  color: white;
+}
+
+body {
+  background-color: #219653;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.nav-link {
+  color: #ffd43b !important;
+}
+
+hr {
+  margin: 0;
+  padding: 0;
+}
+
+.col {
+  padding: 0 !important;
+}
+
+.row-fullwidth {
+  --bs-gutter-x: 1.5rem !important;
+  margin-top: 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.disable-cursor {
+  pointer-events: none;
+  cursor: auto;
+}
+
+.Loading-Spinner {
+  width: 100%;
+  text-align: center;
+}
+
+.h1-header {
+  text-align: center;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  color: #ffd43b;
+  font-size: 2.3rem;
+  margin-top: 7vh;
+  margin-bottom: 4vh;
+}
+
+.auth-form {
+  width: 28%;
+  margin: 0 auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.auth-form .text-label {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-top: 2vh;
+  font-size: 1.3rem;
+  display: block;
+  color: white;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+}
+
+.auth-form .text-input {
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 2.5rem;
+  border: 0;
+  outline: none;
+  width: 100%;
+  background-color: #27ae60;
+  padding: 0 1rem;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: white;
+}
+
+.auth-form .text-input:focus {
+  background-color: #6fcf97;
+  color: black;
+  width: 102%;
+  -webkit-transform: translateX(-1%);
+          transform: translateX(-1%);
+}
+
+.auth-form .text-input:focus::-webkit-input-placeholder {
+  opacity: 0;
+}
+
+.auth-form .text-input:focus:-ms-input-placeholder {
+  opacity: 0;
+}
+
+.auth-form .text-input:focus::-ms-input-placeholder {
+  opacity: 0;
+}
+
+.auth-form .text-input:focus::placeholder {
+  opacity: 0;
+}
+
+.auth-form .text-input::-webkit-input-placeholder {
+  font-weight: 500;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.auth-form .text-input:-ms-input-placeholder {
+  font-weight: 500;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.auth-form .text-input::-ms-input-placeholder {
+  font-weight: 500;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.auth-form .text-input::placeholder {
+  font-weight: 500;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.auth-form .confirm-section {
+  margin-top: 3vh;
+}
+
+.auth-form .auth_button {
+  font-weight: 600;
+  margin-left: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 12rem;
+  padding: 0.1rem 0;
+  font-size: 1.3rem;
+  text-align: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #27ae60;
+  border: none;
+  color: white;
+  -webkit-box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
+          box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.auth-form .auth_button:hover {
+  -webkit-box-shadow: 0 0 1rem rgba(0, 0, 0, 0.104);
+          box-shadow: 0 0 1rem rgba(0, 0, 0, 0.104);
+}
+
+.auth-form .checkbox-container {
+  padding-top: 0.4rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.auth-form .checkbox-container .remember-checkbox {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+
+.auth-form .checkbox-container .remember-checkbox:checked + .remember-label::before {
+  content: "\002714";
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: "Dosis", sans-serif;
+  background-color: #27ae60;
+}
+
+.auth-form .checkbox-container .remember-label {
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.auth-form .checkbox-container .remember-label::before {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  content: "";
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: #6fcf97;
+  margin-right: 0.5rem;
+}
+
+.auth_redirect {
+  font-family: "Dosis", sans-serif;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0 auto;
+  margin-top: 4vh;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.auth_redirect:hover {
+  opacity: 0.85;
+}
+
 .Task-Modal {
   opacity: 1;
   z-index: 1;
@@ -68,8 +322,8 @@ hr {
           box-shadow: 0 0 2rem rgba(0, 0, 0, 0.319);
   z-index: 2;
   opacity: 1;
-  -webkit-transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .Overlay {
@@ -85,19 +339,159 @@ hr {
           backdrop-filter: blur(0.1rem);
   z-index: 1;
   opacity: 1;
-  -webkit-transition: opacity 0.6s ease-in-out;
-  transition: opacity 0.6s ease-in-out;
+  -webkit-transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
+  visibility: auto;
 }
 
 .hiddenModal-Window {
   width: 48%;
   top: 28%;
   opacity: 0;
+  -webkit-transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .hidden {
   opacity: 0;
-  -webkit-transition: opacity 0.6s ease-in-out;
-  transition: opacity 0.6s ease-in-out;
+  visibility: hidden;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.close-Modal {
+  color: #ffd43b;
+  position: absolute;
+  right: 0.5rem;
+  top: 0.3rem;
+  font-size: 2rem;
+  line-height: 2rem;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.Modal_Content {
+  text-align: center;
+  margin: 2.5rem 0 1.5rem 0;
+  padding: 0 5%;
+}
+
+.change-title_Modal {
+  width: 100%;
+  height: 3rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 2.6rem;
+  border: 0;
+  outline: none;
+  background-color: #27ae60;
+  padding: 0 1rem;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: white;
+}
+
+.change-title_Modal:focus {
+  background-color: #6fcf97;
+  color: black;
+}
+
+.change-title_Modal:focus::-webkit-input-placeholder {
+  opacity: 0;
+}
+
+.change-title_Modal:focus:-ms-input-placeholder {
+  opacity: 0;
+}
+
+.change-title_Modal:focus::-ms-input-placeholder {
+  opacity: 0;
+}
+
+.change-title_Modal:focus::placeholder {
+  opacity: 0;
+}
+
+.change-title_Modal::-webkit-input-placeholder {
+  font-weight: 500;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.change-title_Modal:-ms-input-placeholder {
+  font-weight: 500;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.change-title_Modal::-ms-input-placeholder {
+  font-weight: 500;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.change-title_Modal::placeholder {
+  font-weight: 500;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.checkbox-container {
+  padding-top: 0.4rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.checkbox-container .remember-checkbox {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+
+.checkbox-container .remember-checkbox:checked + .remember-label::before {
+  content: "\002714";
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: "Dosis", sans-serif;
+  background-color: #27ae60;
+}
+
+.checkbox-container .remember-label {
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.checkbox-container .remember-label::before {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  content: "";
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: #6fcf97;
+  margin-right: 0.5rem;
 }
 /*# sourceMappingURL=TaskShowModal.css.map */
