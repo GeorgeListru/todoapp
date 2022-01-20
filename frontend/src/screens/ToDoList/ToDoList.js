@@ -5,7 +5,7 @@ import "./ToDoList.css";
 import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import ToDoTask from "./ToDoTask";
-import { Spinner } from "react-bootstrap";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import TaskShowModal from "./TaskShowModal";
 import { setTasks } from "../../store/TasksListReducer";
 import FormatDate from "../../functions/FormatDate";
@@ -111,11 +111,7 @@ function ToDoList() {
 				</div>
 			</div>
 			<div className="todolist">
-				{(isLoadingToDoList && (
-					<div className="Loading-Spinner">
-						<Spinner animation="border" variant="warning" />
-					</div>
-				)) ||
+				{(isLoadingToDoList && <LoadingSpinner />) ||
 					tasksList.map((task) => {
 						if (tab == "todo" && !task.isCompleted) {
 							return <ToDoTask key={task.id} taskID={task.id} task={task} />;

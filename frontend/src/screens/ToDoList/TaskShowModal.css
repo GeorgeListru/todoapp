@@ -46,11 +46,6 @@ hr {
   cursor: auto;
 }
 
-.Loading-Spinner {
-  width: 100%;
-  text-align: center;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -95,11 +90,6 @@ hr {
 .disable-cursor {
   pointer-events: none;
   cursor: auto;
-}
-
-.Loading-Spinner {
-  width: 100%;
-  text-align: center;
 }
 
 .h1-header {
@@ -310,12 +300,12 @@ hr {
 }
 
 .Modal-Window {
+  min-height: 5rem;
   position: absolute;
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
   width: 55%;
-  height: 50%;
   top: 23%;
   background-color: #219653;
   -webkit-box-shadow: 0 0 2rem rgba(0, 0, 0, 0.319);
@@ -339,8 +329,8 @@ hr {
           backdrop-filter: blur(0.1rem);
   z-index: 1;
   opacity: 1;
-  -webkit-transition: opacity 0.4s ease-in-out;
-  transition: opacity 0.4s ease-in-out;
+  -webkit-transition: opacity 0.4s linear;
+  transition: opacity 0.4s linear;
   visibility: auto;
 }
 
@@ -348,15 +338,13 @@ hr {
   width: 48%;
   top: 28%;
   opacity: 0;
-  -webkit-transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .hidden {
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.4s linear;
+  transition: all 0.4s linear;
 }
 
 .close-Modal {
@@ -565,7 +553,7 @@ hr {
 
 .Moodal-AddFile-Icon {
   font-weight: 500;
-  color: #ffd43b;
+  color: white;
   padding-right: 0.4rem;
   -webkit-transition: color 0.1s ease-in-out;
   transition: color 0.1s ease-in-out;
@@ -582,16 +570,16 @@ hr {
   width: 100%;
   margin-right: auto;
   text-align: center;
-  color: #ffd43b;
+  color: white;
   font-family: "Dosis", sans-serif;
   font-weight: 600;
-  -webkit-transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
-  transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+  -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
 
 .Modal-AddFile:hover {
   color: white;
-  background-color: #6fcf97;
+  background-color: #219653;
 }
 
 .Modal-AddFile:hover .Moodal-AddFile-Icon {
@@ -649,5 +637,45 @@ hr {
 .Modal-File-Option:hover {
   opacity: 0.8;
   color: #ffd43b;
+}
+
+.Submit_btn {
+  font-weight: 600;
+  margin-left: auto;
+  margin-top: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 10rem;
+  padding: 0.1rem 0;
+  font-size: 1.3rem;
+  text-align: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #27ae60;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  border: none;
+  color: white;
+  -webkit-box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
+          box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.Submit_btn:hover {
+  -webkit-box-shadow: 0 0 1rem rgba(0, 0, 0, 0.104);
+          box-shadow: 0 0 1rem rgba(0, 0, 0, 0.104);
+}
+
+.Modal-ChangesLoading {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.4rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  opacity: 0.5;
+  color: white;
 }
 /*# sourceMappingURL=TaskShowModal.css.map */

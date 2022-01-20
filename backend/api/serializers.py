@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ToDoItem, ToDoItemFile
+from .models import ToDoItem, ToDoItemFile, Profile
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -43,4 +43,9 @@ class ToDoItemSerializer(serializers.ModelSerializer):
 class ToDoItemFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDoItemFile
+        fields = '__all__'
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
         fields = '__all__'

@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='todoitemfile',
             name='file',
-            field=models.FileField(blank=True, null=True, upload_to=api.models.user_directory_path),
+            field=models.FileField(blank=True, null=True, upload_to=api.models.task_directory_path),
         ),
     ]

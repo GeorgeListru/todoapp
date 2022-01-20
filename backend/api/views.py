@@ -1,18 +1,17 @@
-from asyncio.windows_events import NULL
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, MyTokenObtainPairSerializer,UserSerializerWithToken, ToDoItemSerializer, ToDoItemFileSerializer
+from .serializers import UserSerializer, MyTokenObtainPairSerializer,UserSerializerWithToken, ToDoItemSerializer, ToDoItemFileSerializer, ProfileSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import ToDoItem, ToDoItemFile
+from .models import ToDoItem, ToDoItemFile, Profile
 from django.utils import timezone
 from django.http import HttpResponse
 from django.conf import settings
-import os
-
+from PIL import Image
+import base64
 @api_view(['POST'])
 def RegisterUser(request):
     try:
@@ -30,7 +29,7 @@ def RegisterUser(request):
             email = data['email'],
             password = make_password(data['password'])
         )
-    
+        Profile.objects.create(user = user)
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
     except:
@@ -174,11 +173,38 @@ def UploadTaskFile(request):
     )
     serializedFile = ToDoItemFileSerializer(file, many=False)
     return Response(serializedFile.data, status=status.HTTP_200_OK)
-    # task_id = request.data['task_id']
-    # todoList=ToDoItem.objects.filter(user=user)
-    # task = ToDoItem.objects.get(pk=task_id)
-    # if task in todoList:
-    #     taskFiles = ToDoItemFile.objects.filter(toDoItem = task)
-    #     print(file)
-    #     message = {'message': "Item added successfully"}
-    #     return Response(message)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def ReplaceTask(request):
+    user = request.user
+    task = request.data
+    todoList=ToDoItem.objects.filter(user=user)
+    getDatabaseTask = ToDoItem.objects.get(pk=task["id"])
+    if getDatabaseTask in todoList:
+        getDatabaseTask.title=task["title"]
+        getDatabaseTask.notes=task['notes']
+        getDatabaseTask.isCompleted=task['isCompleted']
+        if(task['isCompleted']):
+            getDatabaseTask.completedAt=timezone.now()
+        else:
+            getDatabaseTask.completedAt=None
+        getDatabaseTask.save()
+        message = {"message":"Data has been updates successfully"}
+        return Response(message, status=status.HTTP_200_OK)
+    message = {'message': "No Authorization provided"}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def GetProfileAvatar(request):
+    user = request.user
+    profile = Profile.objects.filter(user=user)[0]
+    serializedProfile = ProfileSerializer(profile, many=False)
+    avatar = serializedProfile.data['avatar']
+    localImage = open(settings.MEDIA_ROOT+avatar, "rb")
+    localImageBase64 = base64.b64encode(localImage.read())
+    response = HttpResponse(localImageBase64)
+    response['Content-Type'] = "image/png"
+    response['Cache-Control'] = "max-age=0"
+    return response

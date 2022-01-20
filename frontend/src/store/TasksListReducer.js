@@ -52,6 +52,11 @@ export const tasksSlice = createSlice({
 				}
 			}
 		},
+		replaceTask: (state, action) => {
+			const new_task = action.payload;
+			const old_task = state.filter((task) => task.id == new_task.id)[0];
+			state[state.indexOf(old_task)] = new_task;
+		},
 	},
 });
 
@@ -63,6 +68,7 @@ export const {
 	deleteTask,
 	setShowModalStatus,
 	setTaskTitle,
+	replaceTask,
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

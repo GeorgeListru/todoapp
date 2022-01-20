@@ -7,6 +7,7 @@ import Home from "./screens/Home/Home";
 import Login from "./screens/Login/Login";
 import Register from "./screens/Register/Register";
 import ToDoList from "./screens/ToDoList/ToDoList";
+import Profile from "./screens/Profile/Profile";
 function App() {
 	return (
 		<Router>
@@ -19,6 +20,7 @@ function App() {
 							<Route path="/login" element={<Login />} exact />
 							<Route path="/register" element={<Register />} exact />
 							<Route path="/todolist" element={<ToDoList />} exact />
+							<Route path="/profile" element={<Profile />} exact />
 						</Routes>
 					</main>
 				</Provider>
