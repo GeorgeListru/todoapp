@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def user_directory_path(instance, filename):
+    return 'user_{0}/tasks/task_{1}/{2}'.format(instance.toDoItem.user.id, instance.toDoItem.id, filename)
 class ToDoItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     title = models.CharField(max_length=100, blank=False, null=False)
@@ -16,4 +18,11 @@ class ToDoItem(models.Model):
 
 class ToDoItemFile(models.Model):
     toDoItem = models.ForeignKey(ToDoItem, on_delete=models.CASCADE, null=False)
-    file = models.FileField(blank=True, null=True)
+    file = models.FileField(blank=True, null=True, upload_to=user_directory_path)
+
+    def __str__(self):
+        return str(self.toDoItem.title)+": "+str(self.file)
+
+    def get_file(self):
+        filename = self.file.split("/")[-1]
+        return filename

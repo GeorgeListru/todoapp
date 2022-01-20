@@ -5,10 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, MyTokenObtainPairSerializer,UserSerializerWithToken, ToDoItemSerializer
+from .serializers import UserSerializer, MyTokenObtainPairSerializer,UserSerializerWithToken, ToDoItemSerializer, ToDoItemFileSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import ToDoItem
+from .models import ToDoItem, ToDoItemFile
 from django.utils import timezone
+from django.http import HttpResponse
+from django.conf import settings
+import os
 
 @api_view(['POST'])
 def RegisterUser(request):
@@ -54,6 +57,7 @@ def GetUserToDoList(request):
     listSerializer = ToDoItemSerializer(todoList, many=True)
     return Response(listSerializer.data)
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def AddInToDoList(request):
@@ -98,3 +102,83 @@ def ChangeCompletedStatus(request):
         return Response(serializedToDoItem.data)
     message = {'message':'No Authorization provided'}
     return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def GetToDoListItem(request):
+    user = request.user
+    item_id = request.data['id']
+    todoList=ToDoItem.objects.filter(user=user)
+    task = ToDoItem.objects.get(pk=item_id)
+    if task in todoList:
+        fileList = ToDoItemFile.objects.filter(toDoItem=task)
+        taskSerializer = ToDoItemSerializer(task, many=False)
+        fileListSerializer = ToDoItemFileSerializer(fileList, many=True)
+        responseData = taskSerializer.data
+        responseData['files'] = fileListSerializer.data
+        return Response(responseData)
+    message = {'message':'No Authorization provided'}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def DownloadTaskFile(request):
+    user = request.user
+    file_id = request.data['file_id']
+    task_id = request.data['task_id']
+    todoList=ToDoItem.objects.filter(user=user)
+    task = ToDoItem.objects.get(pk=task_id)
+    if task in todoList:
+        taskFiles = ToDoItemFile.objects.filter(toDoItem = task)
+        file = ToDoItemFile.objects.get(pk = file_id)
+        if file in taskFiles:
+            serializedFile = ToDoItemFileSerializer(file)
+            localFile = open(settings.MEDIA_ROOT+serializedFile.data['file'],"rb")
+            response = HttpResponse(localFile, content_type='')
+            response['Content-Type'] = "application/octet-stream"
+            response["Content-Disposition"] = f"attachment; filename={str(file.file).split('/')[-1]}"
+            # response["Content-Type"] = "application/octet-stream"
+            return response
+    message = {'message':'No Authorization provided'}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def DeleteaTaskFile(request):
+    user = request.user
+    file_id = request.data['file_id']
+    task_id = request.data['task_id']
+    todoList=ToDoItem.objects.filter(user=user)
+    task = ToDoItem.objects.get(pk=task_id)
+    if task in todoList:
+        taskFiles = ToDoItemFile.objects.filter(toDoItem = task)
+        file = ToDoItemFile.objects.get(pk = file_id)
+        if file in taskFiles:
+            file.delete()
+            message = {'message': 'Item no. '+str(task_id)+ " was deleted successfully!"}
+            return Response(message, status=status.HTTP_200_OK)
+    message = {'message': "No Authorization provided"}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def UploadTaskFile(request):
+    user = request.user
+    task_id = request.data['task_id']
+    task = ToDoItem.objects.get(pk=task_id)
+    file_to_upload = request.data['file']
+    file = ToDoItemFile.objects.create(
+        file=file_to_upload,
+        toDoItem = task
+    )
+    serializedFile = ToDoItemFileSerializer(file, many=False)
+    return Response(serializedFile.data, status=status.HTTP_200_OK)
+    # task_id = request.data['task_id']
+    # todoList=ToDoItem.objects.filter(user=user)
+    # task = ToDoItem.objects.get(pk=task_id)
+    # if task in todoList:
+    #     taskFiles = ToDoItemFile.objects.filter(toDoItem = task)
+    #     print(file)
+    #     message = {'message': "Item added successfully"}
+    #     return Response(message)
