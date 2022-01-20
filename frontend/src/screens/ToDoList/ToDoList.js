@@ -8,6 +8,7 @@ import ToDoTask from "./ToDoTask";
 import { Spinner } from "react-bootstrap";
 import TaskShowModal from "./TaskShowModal";
 import { setTasks } from "../../store/TasksListReducer";
+import FormatDate from "../../functions/FormatDate";
 function ToDoList() {
 	const [isLoadingToDoList, setIsLoadingToDoList] = useState(false);
 	const userData = useSelector((state) => state.login);
@@ -15,8 +16,7 @@ function ToDoList() {
 	const dispatch = useDispatch();
 	function formatTaskData(task) {
 		const date = new Date(task.createdAt);
-		task.createdAt = `${date.getDate()}/
-		${date.getMonth() + 1}/${date.getFullYear()}`;
+		task.createdAt = FormatDate(task.createdAt);
 		task = {
 			...task,
 			showDeleteBtn: false,
