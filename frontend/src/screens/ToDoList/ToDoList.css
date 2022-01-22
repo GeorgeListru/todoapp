@@ -45,11 +45,6 @@ hr {
   cursor: auto;
 }
 
-.Loading-Spinner {
-  width: 100%;
-  text-align: center;
-}
-
 .todolist {
   scroll-behavior: smooth;
   width: 58%;

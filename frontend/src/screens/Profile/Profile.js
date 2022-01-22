@@ -46,14 +46,27 @@ function Profile() {
 				<div>
 					<div className="h1-header">{user.username}</div>
 					<div className="avatar-container">
-						<img src={"data:image/png;base64," + avatar} />
-						<label htmlFor="upload-avatar">Upload Image</label>
+						<img
+							src={"data:image/png;base64," + avatar}
+							className="avatar"
+						></img>
+						<label htmlFor="upload-avatar" className="upload-avatar-label">
+							Upload Image
+						</label>
 						<input
 							id="upload-avatar"
 							type="file"
 							className="upload-avatar"
 						></input>
 					</div>
+					<div className="user-profile-data">
+						<label>Email: </label>
+						<div>
+							{user.email}
+							<i class="far fa-edit"></i>
+						</div>
+					</div>
+					<button className="change-pass-button">Change password</button>
 				</div>
 			) : (
 				<></>
