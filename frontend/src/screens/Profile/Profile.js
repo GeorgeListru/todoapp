@@ -4,10 +4,13 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Buffer } from "buffer";
 import "./Profile.css";
+import "./EditImageModal";
+import EditImageModal from "./EditImageModal";
 function Profile() {
 	const userData = useSelector((state) => state.login);
 	const [user, setUser] = useState(null);
 	const [avatar, setAvatar] = useState(null);
+	const [uploadedImage, setUploadedImage] = useState(null);
 	useEffect(() => {
 		async function getProfileDataRequest() {
 			const config = {
@@ -38,13 +41,17 @@ function Profile() {
 		getProfileDataRequest();
 		getProfileAvatarRequest();
 	}, []);
-	useEffect(() => {}, []);
+
+	function imageEditHandler(e) {
+		setUploadedImage(e.target.files[0]);
+	}
 
 	return (
 		<div>
 			{user ? (
 				<div>
 					<div className="h1-header">{user.username}</div>
+
 					<div className="avatar-container">
 						<img
 							src={"data:image/png;base64," + avatar}
@@ -54,6 +61,7 @@ function Profile() {
 							Upload Image
 						</label>
 						<input
+							onChange={imageEditHandler}
 							id="upload-avatar"
 							type="file"
 							className="upload-avatar"
@@ -67,6 +75,8 @@ function Profile() {
 						</div>
 					</div>
 					<button className="change-pass-button">Change password</button>
+
+					<EditImageModal avatarSetter={setAvatar} file={uploadedImage} fileSetter={setUploadedImage} />
 				</div>
 			) : (
 				<></>

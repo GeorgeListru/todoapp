@@ -1,0 +1,49 @@
+@import "../../App.scss";
+.EditImageWindow {
+	min-height: 5rem;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 2rem 5%;
+	top: 21%;
+	background-color: $green-color;
+	box-shadow: 0 0 2rem rgba(0, 0, 0, 0.319);
+	z-index: 2;
+	opacity: 1;
+	transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+.EditImageModal {
+	z-index: 2;
+}
+.Overlay {
+	z-index: 2;
+}
+.Image-Cropper-Container {
+	text-align: center;
+}
+
+.save-avatar-button {
+	font-weight: 600;
+	margin: 0 auto;
+	margin-top: 1.5rem;
+	display: flex;
+	width: 15rem;
+	padding: 0.1rem 0;
+	font-size: 1.3rem;
+	text-align: center;
+	justify-content: center;
+	background-color: $light-green-color;
+	font-family: "Dosis", sans-serif;
+	font-weight: 500;
+	border: none;
+	color: white;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
+	transition: all 0.3s ease-in-out;
+	&:hover {
+		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.154);
+	}
+}
+.Image-Cropper {
+	width: 20rem !important;
+	height: 20rem !important;
+}
