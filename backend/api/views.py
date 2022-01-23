@@ -4,14 +4,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, MyTokenObtainPairSerializer,UserSerializerWithToken, ToDoItemSerializer, ToDoItemFileSerializer, ProfileSerializer
+from .serializers import UserSerializer, MyTokenObtainPairSerializer,UserSerializerWithToken,\
+ ToDoItemSerializer, ToDoItemFileSerializer, ProfileSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import ToDoItem, ToDoItemFile, Profile
 from django.utils import timezone
 from django.http import HttpResponse
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from django.core import files
 from PIL import Image
 import base64
+import os
+import cv2
 @api_view(['POST'])
 def RegisterUser(request):
     try:
@@ -203,6 +208,55 @@ def GetProfileAvatar(request):
     serializedProfile = ProfileSerializer(profile, many=False)
     avatar = serializedProfile.data['avatar']
     localImage = open(settings.MEDIA_ROOT+avatar, "rb")
+    localImageBase64 = base64.b64encode(localImage.read())
+    response = HttpResponse(localImageBase64)
+    response['Content-Type'] = "image/png"
+    response['Cache-Control'] = "max-age=0"
+    return response
+
+def save_temp_image_from_base64(imageString, user):
+    if not os.path.exists(settings.TEMP):
+        os.mkdir(settings.TEMP)
+    if not os.path.exists(settings.TEMP+'/user'+str(user.pk)):
+        os.mkdir(settings.TEMP+'/user'+str(user.pk))
+    url = os.path.join(settings.TEMP+'/user'+str(user.pk), 'TEMP_PROFILE_IMG.png')
+    storage = FileSystemStorage(location=url)
+    image = base64.b64decode(imageString)
+    file_to_save = open(url , 'wb+')
+    file_to_save.write(image)
+    file_to_save.close()
+    return url
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def SaveProfileAvatar(request):
+    user = request.user
+    data = request.data
+    profile = Profile.objects.filter(user=user)[0]
+    
+    base64Image = data['image'].replace('data:image/png;base64,', '')
+    saved_image_url = save_temp_image_from_base64(base64Image, user)
+    image = cv2.imread(saved_image_url)
+
+    cropX = int(float(str(data['cropX'])))
+    cropY = int(float(str(data['cropY'])))
+    cropWidth = int(float(str(data['cropWidth'])))
+    cropHeight = int(float(str(data['cropHeight'])))
+    print(cropX, cropY, cropWidth, cropHeight)
+    if cropX < 0: cropX = 0
+    if cropY < 0: cropY = 0
+
+    croppedImage = image[cropY: cropY + cropHeight, cropX: cropX + cropWidth]
+    cv2.imwrite(saved_image_url, croppedImage)
+    profile.avatar.delete()
+    profile.avatar = files.File(open(saved_image_url, 'rb'))
+    profile.save()
+    os.remove(saved_image_url)
+
+    serializedProfile = ProfileSerializer(profile, many=False)
+    avatar_location = serializedProfile.data['avatar']
+    
+    localImage = open(settings.MEDIA_ROOT+avatar_location, "rb")
     localImageBase64 = base64.b64encode(localImage.read())
     response = HttpResponse(localImageBase64)
     response['Content-Type'] = "image/png"

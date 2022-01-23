@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import RegisterUser, MyTokenObtainPairView, GetUserProfile, GetUserToDoList, \
     AddInToDoList, RemoveItemFromToDoList, ChangeCompletedStatus, GetToDoListItem, DownloadTaskFile,\
-    DeleteaTaskFile, UploadTaskFile, ReplaceTask, GetProfileAvatar
+    DeleteaTaskFile, UploadTaskFile, ReplaceTask, GetProfileAvatar, SaveProfileAvatar
 urlpatterns = [
     path('users/register', RegisterUser, name = 'register-user'),
     path('users/login', MyTokenObtainPairView.as_view(), name = 'login-user'),
@@ -16,4 +16,5 @@ urlpatterns = [
     path('todolist/uploadfile', UploadTaskFile, name='upload-task-file'),
     path('todolist/replaceitem', ReplaceTask, name="replace-task"),
     path('users/avatar', GetProfileAvatar, name='user-avatar'),
+    path('users/saveavatar', SaveProfileAvatar, name="save-avatar")
 ]
