@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import RegisterUser, MyTokenObtainPairView, GetUserProfile, GetUserToDoList, \
     AddInToDoList, RemoveItemFromToDoList, ChangeCompletedStatus, GetToDoListItem, DownloadTaskFile,\
-    DeleteaTaskFile, UploadTaskFile, ReplaceTask, GetProfileAvatar, SaveProfileAvatar
+    DeleteaTaskFile, UploadTaskFile, ReplaceTask, GetProfileAvatar, SaveProfileAvatar, changeEmail,\
+    changePassword, passwordForgot, resetPassword
 urlpatterns = [
     path('users/register', RegisterUser, name = 'register-user'),
     path('users/login', MyTokenObtainPairView.as_view(), name = 'login-user'),
@@ -16,5 +17,9 @@ urlpatterns = [
     path('todolist/uploadfile', UploadTaskFile, name='upload-task-file'),
     path('todolist/replaceitem', ReplaceTask, name="replace-task"),
     path('users/avatar', GetProfileAvatar, name='user-avatar'),
-    path('users/saveavatar', SaveProfileAvatar, name="save-avatar")
+    path('users/saveavatar', SaveProfileAvatar, name="save-avatar"),
+    path('users/changeemail', changeEmail, name="change-email"),
+    path('users/changepassword', changePassword, name="change-password"),
+    path('users/passwordforgot', passwordForgot, name="password-forgot"),
+    path('users/passwordreset', resetPassword, name="reset-password"),
 ]

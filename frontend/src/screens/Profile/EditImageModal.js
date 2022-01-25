@@ -70,7 +70,12 @@ function EditImageModal({ avatarSetter, file, fileSetter }) {
 	return (
 		<div className={"EditImageModal " + showModal}>
 			<div onClick={closeWindow} className={"Overlay " + showModal} />
-			<div className={"EditImageWindow " + showModal}>
+			<div
+				className={
+					"EditImageWindow " +
+					(showModal.length !== 0 ? "Modal-Window-Hidden" : "")
+				}
+			>
 				<i onClick={closeWindow} className="fas fa-times close-Modal" />
 				<div className="Image-Cropper-Container">
 					<Cropper

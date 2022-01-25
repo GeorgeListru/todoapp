@@ -2,21 +2,26 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer, MyTokenObtainPairSerializer,UserSerializerWithToken,\
  ToDoItemSerializer, ToDoItemFileSerializer, ProfileSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import ToDoItem, ToDoItemFile, Profile
+from django.contrib.auth.tokens import default_token_generator
 from django.utils import timezone
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.core.mail import send_mail
 from django.core import files
 from PIL import Image
 import base64
 import os
 import cv2
+
 @api_view(['POST'])
 def RegisterUser(request):
     try:
@@ -262,3 +267,60 @@ def SaveProfileAvatar(request):
     response['Content-Type'] = "image/png"
     response['Cache-Control'] = "max-age=0"
     return response
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def changeEmail(request):
+    user = request.user
+    if user.check_password(request.data.get('password')):
+        user.email = request.data.get('newEmail')
+        user.save()
+        serializedUser = UserSerializer(user, many = False)
+        return Response(serializedUser.data)
+    message = {'message': "No Authorization provided"}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def changePassword(request):
+    user = request.user
+    if user.check_password(request.data.get('oldPassword')):
+        user.password = make_password(request.data.get('newPassword'))
+        user.save()
+        message = {"message": "Password changes successfully!"}
+        return Response(message, status=status.HTTP_200_OK)
+    message = {'message': "No Authorization provided"}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def passwordForgot(request):
+    data=request.data
+    email = data.get('email')
+    if User.objects.filter(email=email).exists():
+        user = User.objects.filter(email=email)[0]
+        if user.email == email:
+            token = default_token_generator.make_token(user)
+            website=data.get('frontend_website')
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            url = website + "/resetpassword/" +uid+'/'+token
+            mail_sent = send_mail("Password Reset", url, settings.EMAIL_HOST_USER, [
+                                    user.email], fail_silently=False)
+            message = {"message": "Email has been sent successfully!"}
+            return Response(message, status=status.HTTP_200_OK)
+    message = {'message': "No Authorization provided"}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def resetPassword(request):
+    data=request.data
+    password = data.get('password')
+    uid = force_str(urlsafe_base64_decode(data.get('uid')))
+    token = data.get('token')
+    user = User.objects.get(pk=uid)
+    if default_token_generator.check_token(user, token):
+        user.password = make_password(password)
+        user.save()
+        message = {"message": "Password changed successfully!"}
+        return Response(message, status=status.HTTP_200_OK)
+    message = {'message': "No Authorization provided"}
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
