@@ -6,6 +6,7 @@
 	font-family: "Dosis", sans-serif;
 	display: flex;
 }
+
 .Logo {
 	margin-top: auto;
 	font-weight: 800;
@@ -13,18 +14,22 @@
 	font-size: 1.8rem;
 	margin-right: auto;
 	transition: all 0.3s ease-in-out;
+
 	&:hover {
 		color: $yellow-color;
 		opacity: 0.9;
 	}
 }
+
 .Control-Link {
 	margin-top: auto;
+	margin-bottom: 0.2rem;
 	font-weight: 700;
 	color: $yellow-color;
 	font-size: 1.2rem;
 	margin-left: auto;
 	transition: all 0.3s ease-in-out;
+
 	&:hover {
 		color: $yellow-color;
 		opacity: 0.9;
@@ -32,23 +37,25 @@
 }
 
 .Profile-Link {
-	color: $yellow-color !important;
+	color: $yellow-color;
 	margin-top: auto;
 	font-weight: 700;
 	font-size: 1.2rem;
 	margin-left: auto;
 	transition: all 0.3s ease-in-out;
-	background-color: transparent;
-	border: none;
+
 	&:hover {
 		color: $yellow-color;
 		opacity: 0.9;
 	}
 }
+
 .profile-dropdown {
 	position: relative;
 	margin-top: auto;
+	margin-bottom: 0.2rem;
 }
+
 .profile-dropdown-menu {
 	display: flex;
 	flex-direction: column;
@@ -64,11 +71,13 @@
 	transform: translateY(-0.2rem);
 	transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
 }
+
 .profile-dropdown-menu-active {
 	pointer-events: auto;
 	transform: translateY(0);
 	opacity: 1;
 }
+
 .profile-arrow {
 	font-size: 0.8rem !important;
 	margin-left: 0.1rem !important;
@@ -76,9 +85,11 @@
 	transition: transform 0.15s ease-in-out;
 	vertical-align: center;
 }
+
 .profile-arrow-active {
 	transform: rotate(90deg);
 }
+
 .profile-dropdown-item {
 	cursor: pointer;
 	text-align: center;
@@ -87,12 +98,14 @@
 	font-weight: 500;
 	padding: 0.25rem 0;
 	transition: background-color 0.2s ease-in-out;
+
 	&:hover {
 		background-color: $green-color;
 	}
 }
-// .profile-dropdown > .Profile-Link:focus + .profile-dropdown-menu {
-// 	pointer-events: auto;
-// 	transform: translateY(0);
-// 	opacity: 1;
-// }
+
+@media all and (max-width: 1000px) {
+	.NavBar {
+		width: 85%;
+	}
+}

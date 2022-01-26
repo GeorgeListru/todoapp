@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@500;600;700;800&display=swap");
 * {
   margin: 0;
@@ -17,10 +18,21 @@ body {
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .nav-link {
   color: #ffd43b !important;
+}
+
+.h1-header {
+  text-align: center;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  color: #ffd43b;
+  font-size: 2.3rem;
+  margin-top: 7vh;
+  margin-bottom: 4vh;
 }
 
 hr {
@@ -35,8 +47,9 @@ hr {
 .row-fullwidth {
   --bs-gutter-x: 1.5rem !important;
   margin-top: 0;
-  margin-right: 0;
-  margin-left: 0;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  width: 100%;
 }
 
 .disable-cursor {
@@ -44,6 +57,140 @@ hr {
   cursor: auto;
 }
 
+.auth-form {
+  width: 30% !important;
+  min-width: 22rem !important;
+  margin: 0 auto !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.text-input {
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 2.5rem;
+  border: 0;
+  outline: none;
+  width: 100%;
+  background-color: #27ae60;
+  padding: 0 1rem;
+  transition: all 0.15s ease-in-out;
+  color: white;
+}
+
+.text-input:focus {
+  background-color: #6fcf97;
+  color: black;
+  width: 102%;
+  transform: translateX(-1%);
+}
+
+.text-input:focus::placeholder {
+  opacity: 0;
+}
+
+.text-input::placeholder {
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.text-label {
+  width: fit-content;
+  margin-top: 2vh;
+  font-size: 1.3rem;
+  display: block;
+  color: white;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.checkbox-container .checkbox {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+
+.checkbox-container .checkbox:checked + .checkbox-label::before {
+  content: "✔";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Dosis", sans-serif;
+  background-color: #27ae60;
+}
+
+.checkbox-container .checkbox-label {
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  display: flex;
+}
+
+.checkbox-container .checkbox-label::before {
+  transition: all 0.2s ease-in-out;
+  content: "";
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: #6fcf97;
+  margin-right: 0.5rem;
+}
+
+.green-button {
+  display: flex;
+  padding: 0.1rem 0;
+  text-align: center;
+  justify-content: center;
+  background-color: #27ae60;
+  border: none;
+  color: white;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+}
+
+.green-button:hover {
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.12);
+}
+
+.redirect-link {
+  font-family: "Dosis", sans-serif;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  color: #ffd43b !important;
+}
+
+.redirect-link:hover {
+  opacity: 0.85;
+}
+
+.display-flex-inline {
+  display: flex;
+}
+
+.disable-cursor {
+  pointer-events: none;
+  cursor: auto;
+}
+
+@media all and (max-width: 1000px) {
+  .checkbox-container {
+    margin-top: 0;
+  }
+
+  .auth-form {
+    width: 50% !important;
+  }
+}
 .EditEmailWindow {
   width: 35rem;
   min-height: 5rem;

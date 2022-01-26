@@ -1,6 +1,33 @@
 @import "../../App.scss";
-@import "../Login/Login.css";
 
 .register_btn {
 	margin-top: 1.5rem;
+	font-weight: 500;
+	margin-left: auto;
+	min-width: 12rem;
+	width: 12rem;
+	font-size: 1.3rem;
+}
+
+.register-redirect {
+	@extend .redirect-link;
+	margin: 4vh auto 0;
+}
+
+.password-input{
+	@extend .text-input;
+	border-right: .3rem transparent solid;
+}
+.green-right-border{
+	border-right-color: green;
+}
+.yellow-right-border{
+	border-right-color: $yellow-color;
+}
+
+@media all and (max-width: 1000px) {
+
+	.register_btn {
+		width: 100%;
+	}
 }

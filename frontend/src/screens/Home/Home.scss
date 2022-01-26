@@ -5,6 +5,7 @@
 	height: 100%;
 	font-family: "Dosis", sans-serif;
 }
+
 .Message {
 	text-align: center;
 	margin: 0 auto;
@@ -30,6 +31,7 @@
 	color: white;
 	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.042);
 	transition: all 0.3s ease-in-out;
+
 	&:hover {
 		width: 15rem;
 		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.215);
@@ -38,8 +40,28 @@
 
 .book-page {
 	width: 50%;
+	min-width: 30rem;
 	margin-top: 7vh;
 	position: fixed;
 	left: 50%;
 	transform: translateX(-50%);
+}
+
+@media all and (max-width: 1000px) {
+	.book-page {
+		min-width: 20rem;
+		width: 70%;
+		margin-top: 8vh;
+	}
+}
+
+@media all and (max-width: 500px) {
+	.Message {
+		font-size: 1.5rem;
+	}
+	.get-started_button {
+		width: 15rem;
+		font-size: 1.3rem;
+		margin-top: 3vh;
+	}
 }

@@ -1,0 +1,10 @@
+@import "../../App.scss";
+.ErrorMessage{
+  width: fit-content;
+  padding: .8% 4%;
+  margin: 0 auto;
+  background-color: $light-green-color;
+  font-family: "Dosis", sans-serif;
+  font-weight:500;
+  color: white;
+}

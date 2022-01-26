@@ -15,7 +15,6 @@ function ToDoList() {
 	const tasksList = useSelector((state) => state.tasks);
 	const dispatch = useDispatch();
 	function formatTaskData(task) {
-		const date = new Date(task.createdAt);
 		task.createdAt = FormatDate(task.createdAt);
 		task = {
 			...task,
@@ -87,13 +86,12 @@ function ToDoList() {
 			<TaskShowModal />
 			<div className="todolist-tabs">
 				<div
-					className={`tabline ${
-						tab === "completed" ? "tabline-down" : "tabline-up"
-					}`}
-				></div>
+	className={`tabline ${
+		tab === "completed" ? "tabline-down" : "tabline-up"
+	}`}
+	/>
 				<div
 					onClick={changeTabHandler}
-					to="/todolist"
 					className={`todolist-tab-page ${
 						tab === "todo" ? "todolist-tabs-current-page" : ""
 					}`}
@@ -105,7 +103,6 @@ function ToDoList() {
 					className={`todolist-tab-page ${
 						tab === "completed" ? "todolist-tabs-current-page" : ""
 					}`}
-					to="todolist/completed"
 				>
 					Completed
 				</div>
@@ -113,9 +110,9 @@ function ToDoList() {
 			<div className="todolist">
 				{(isLoadingToDoList && <LoadingSpinner />) ||
 					tasksList.map((task) => {
-						if (tab == "todo" && !task.isCompleted) {
+						if (tab === "todo" && !task.isCompleted) {
 							return <ToDoTask key={task.id} taskID={task.id} task={task} />;
-						} else if (tab == "completed" && task.isCompleted) {
+						} else if (tab === "completed" && task.isCompleted) {
 							return <ToDoTask key={task.id} taskID={task.id} task={task} />;
 						}
 					})}
@@ -128,7 +125,7 @@ function ToDoList() {
 			>
 				{enterItemMode ? (
 					<Row className="row-fullwidth">
-						<Col md={11} className="col">
+						<Col md={10} className="col">
 							<input
 								placeholder="Enter your task"
 								type="text"
@@ -143,7 +140,7 @@ function ToDoList() {
 								}}
 							/>
 						</Col>
-						<Col md={1} className="col" onClick={addItemHandler}>
+						<Col md={2} className="col" onClick={addItemHandler}>
 							<i className="fas fa-arrow-up add-to-list-icon"></i>
 						</Col>
 					</Row>

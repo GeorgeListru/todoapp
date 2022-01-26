@@ -21,29 +21,41 @@ from PIL import Image
 import base64
 import os
 import cv2
+from .validators import CheckEmail, CheckUsername, CheckPassword
 
 @api_view(['POST'])
 def RegisterUser(request):
     try:
         data = request.data
-        
-        if User.objects.filter(username=data['username']).exists():
-            message = {"message","Username is already used"}
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
+        if not CheckEmail(email):
+            message = {"detail": "The email is invalid"}
             return Response(message, status=status.HTTP_409_CONFLICT)
-        if User.objects.filter(email=data['email']).exists():
-            message = {"message","Email is already used"}
+        if not CheckPassword(password):
+            message = {"detail": "The password is invalid"}
             return Response(message, status=status.HTTP_409_CONFLICT)
-    
+        if not CheckUsername(username):
+            message = {"detail": "The username is invalid"}
+            return Response(message, status=status.HTTP_409_CONFLICT)
+        if User.objects.filter(username=username).exists():
+            message = {"detail": "The username is already used"}
+            return Response(message, status=status.HTTP_409_CONFLICT)
+        if User.objects.filter(email=email).exists():
+            message = {"detail": "The email is already used"}
+            return Response(message, status=status.HTTP_409_CONFLICT)
+
         user = User.objects.create(
-            username = data['username'],
-            email = data['email'],
-            password = make_password(data['password'])
+            username = username,
+            email = email,
+            password = make_password(password)
         )
         Profile.objects.create(user = user)
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
     except:
-        message = {'message':'We can\'t process your request'}
+        message = {'detail':'We can\'t process your request'}
         return Response(message, status = status.HTTP_400_BAD_REQUEST)
 
 

@@ -19,10 +19,21 @@ body {
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .nav-link {
   color: #ffd43b !important;
+}
+
+.h1-header {
+  text-align: center;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  color: #ffd43b;
+  font-size: 2.3rem;
+  margin-top: 7vh;
+  margin-bottom: 4vh;
 }
 
 hr {
@@ -37,8 +48,9 @@ hr {
 .row-fullwidth {
   --bs-gutter-x: 1.5rem !important;
   margin-top: 0;
-  margin-right: 0;
-  margin-left: 0;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  width: 100%;
 }
 
 .disable-cursor {
@@ -46,6 +58,140 @@ hr {
   cursor: auto;
 }
 
+.auth-form {
+  width: 30% !important;
+  min-width: 22rem !important;
+  margin: 0 auto !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.text-input {
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 2.5rem;
+  border: 0;
+  outline: none;
+  width: 100%;
+  background-color: #27ae60;
+  padding: 0 1rem;
+  transition: all 0.15s ease-in-out;
+  color: white;
+}
+
+.text-input:focus {
+  background-color: #6fcf97;
+  color: black;
+  width: 102%;
+  transform: translateX(-1%);
+}
+
+.text-input:focus::placeholder {
+  opacity: 0;
+}
+
+.text-input::placeholder {
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.text-label {
+  width: fit-content;
+  margin-top: 2vh;
+  font-size: 1.3rem;
+  display: block;
+  color: white;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.checkbox-container .checkbox {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+
+.checkbox-container .checkbox:checked + .checkbox-label::before {
+  content: "✔";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Dosis", sans-serif;
+  background-color: #27ae60;
+}
+
+.checkbox-container .checkbox-label {
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  display: flex;
+}
+
+.checkbox-container .checkbox-label::before {
+  transition: all 0.2s ease-in-out;
+  content: "";
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: #6fcf97;
+  margin-right: 0.5rem;
+}
+
+.green-button, .login-button {
+  display: flex;
+  padding: 0.1rem 0;
+  text-align: center;
+  justify-content: center;
+  background-color: #27ae60;
+  border: none;
+  color: white;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+}
+
+.green-button:hover, .login-button:hover {
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.12);
+}
+
+.redirect-link, .login-redirect, .reset_redirect {
+  font-family: "Dosis", sans-serif;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  color: #ffd43b !important;
+}
+
+.redirect-link:hover, .login-redirect:hover, .reset_redirect:hover {
+  opacity: 0.85;
+}
+
+.display-flex-inline {
+  display: flex;
+}
+
+.disable-cursor {
+  pointer-events: none;
+  cursor: auto;
+}
+
+@media all and (max-width: 1000px) {
+  .checkbox-container {
+    margin-top: 0;
+  }
+
+  .auth-form {
+    width: 50% !important;
+  }
+}
 * {
   margin: 0;
   padding: 0;
@@ -64,10 +210,21 @@ body {
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .nav-link {
   color: #ffd43b !important;
+}
+
+.h1-header {
+  text-align: center;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  color: #ffd43b;
+  font-size: 2.3rem;
+  margin-top: 7vh;
+  margin-bottom: 4vh;
 }
 
 hr {
@@ -82,8 +239,9 @@ hr {
 .row-fullwidth {
   --bs-gutter-x: 1.5rem !important;
   margin-top: 0;
-  margin-right: 0;
-  margin-left: 0;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  width: 100%;
 }
 
 .disable-cursor {
@@ -91,31 +249,14 @@ hr {
   cursor: auto;
 }
 
-.h1-header {
-  text-align: center;
-  font-family: "Dosis", sans-serif;
-  font-weight: 600;
-  color: #ffd43b;
-  font-size: 2.3rem;
-  margin-top: 7vh;
-  margin-bottom: 4vh;
+.auth-form {
+  width: 30% !important;
+  min-width: 22rem !important;
+  margin: 0 auto !important;
+  transition: all 0.3s ease-in-out !important;
 }
 
-.auth-form {
-  width: 28%;
-  margin: 0 auto;
-  transition: all 0.3s ease-in-out;
-}
-.auth-form .text-label {
-  width: fit-content;
-  margin-top: 2vh;
-  font-size: 1.3rem;
-  display: block;
-  color: white;
-  font-family: "Dosis", sans-serif;
-  font-weight: 500;
-}
-.auth-form .text-input {
+.text-input {
   font-family: "Dosis", sans-serif;
   font-weight: 600;
   font-size: 1.1rem;
@@ -128,53 +269,47 @@ hr {
   transition: all 0.15s ease-in-out;
   color: white;
 }
-.auth-form .text-input:focus {
+
+.text-input:focus {
   background-color: #6fcf97;
   color: black;
   width: 102%;
   transform: translateX(-1%);
 }
-.auth-form .text-input:focus::placeholder {
+
+.text-input:focus::placeholder {
   opacity: 0;
 }
-.auth-form .text-input::placeholder {
+
+.text-input::placeholder {
   font-weight: 500;
   transition: all 0.15s ease-in-out;
   color: #e0e0e0;
 }
-.auth-form .confirm-section {
-  margin-top: 3vh;
-}
-.auth-form .auth_button {
-  font-weight: 600;
-  margin-left: auto;
-  display: flex;
-  width: 12rem;
-  padding: 0.1rem 0;
+
+.text-label {
+  width: fit-content;
+  margin-top: 2vh;
   font-size: 1.3rem;
-  text-align: center;
-  justify-content: center;
-  background-color: #27ae60;
-  border: none;
+  display: block;
   color: white;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
-  transition: all 0.3s ease-in-out;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
 }
-.auth-form .auth_button:hover {
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.104);
-}
-.auth-form .checkbox-container {
+
+.checkbox-container {
   display: flex;
   align-items: center;
-  margin: 0 !important;
-  padding-top: 0.4em;
+  width: fit-content;
 }
-.auth-form .checkbox-container .remember-checkbox {
+
+.checkbox-container .checkbox {
   cursor: pointer;
   opacity: 0;
   position: absolute;
 }
-.auth-form .checkbox-container .remember-checkbox:checked + .remember-label::before {
+
+.checkbox-container .checkbox:checked + .checkbox-label::before {
   content: "✔";
   display: flex;
   justify-content: center;
@@ -182,17 +317,18 @@ hr {
   font-family: "Dosis", sans-serif;
   background-color: #27ae60;
 }
-.auth-form .checkbox-container .remember-label {
+
+.checkbox-container .checkbox-label {
   font-family: "Dosis", sans-serif;
   font-weight: 500;
   font-size: 1.2rem;
   color: white;
   cursor: pointer;
   display: flex;
-  transition: all 0.3s ease-in-out;
 }
-.auth-form .checkbox-container .remember-label::before {
-  transition: all 0.3s ease-in-out;
+
+.checkbox-container .checkbox-label::before {
+  transition: all 0.2s ease-in-out;
   content: "";
   width: 1.6rem;
   height: 1.6rem;
@@ -200,19 +336,91 @@ hr {
   margin-right: 0.5rem;
 }
 
-.auth_redirect {
+.green-button, .login-button {
+  display: flex;
+  padding: 0.1rem 0;
+  text-align: center;
+  justify-content: center;
+  background-color: #27ae60;
+  border: none;
+  color: white;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+}
+
+.green-button:hover, .login-button:hover {
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.12);
+}
+
+.redirect-link, .login-redirect, .reset_redirect {
   font-family: "Dosis", sans-serif;
   width: fit-content;
   display: flex;
   justify-content: center;
-  margin: 0 auto;
-  margin-top: 4vh;
   transition: all 0.2s ease-in-out;
+  color: #ffd43b !important;
 }
-.auth_redirect:hover {
+
+.redirect-link:hover, .login-redirect:hover, .reset_redirect:hover {
   opacity: 0.85;
 }
 
+.display-flex-inline {
+  display: flex;
+}
+
+.disable-cursor {
+  pointer-events: none;
+  cursor: auto;
+}
+
+@media all and (max-width: 1000px) {
+  .checkbox-container {
+    margin-top: 0;
+  }
+
+  .auth-form {
+    width: 50% !important;
+  }
+}
+.confirm-section {
+  margin-top: 1.5rem !important;
+}
+
+.custom-Loading-Spinner {
+  margin-top: 3rem;
+}
+
+.login-button {
+  font-weight: 500;
+  margin-left: auto;
+  min-width: 12rem;
+  width: 12rem;
+  font-size: 1.3rem;
+}
+
+.reset_redirect {
+  margin-top: auto;
+  margin-bottom: 0.1rem;
+  margin-left: auto;
+}
+
+.login-redirect {
+  margin: 4vh auto 0;
+}
+
+@media all and (max-width: 1000px) {
+  .login-button {
+    width: 100%;
+    margin: 0.8rem auto 0;
+  }
+
+  .confirm-section {
+    margin-top: 1rem !important;
+    display: flex;
+    flex-direction: column;
+  }
+}
 .Task-Modal {
   opacity: 1;
   z-index: 1;
@@ -305,7 +513,6 @@ hr {
 }
 
 .checkbox-container {
-  margin-top: 1rem;
   display: flex;
   align-items: center;
 }

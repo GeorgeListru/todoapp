@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { logoutUser } from "../../store/LoginUserReducer";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import axios from "axios";
+
 function Header() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -43,6 +44,7 @@ function Header() {
 
 	const [profileDropdownStatus, setProfileDropdownStatus] = useState("");
 	const [profileArrowStatus, setProfileArrowStatus] = useState("");
+
 	function onProfileClickHandler(e) {
 		if (profileDropdownStatus.length > 0) {
 			setProfileDropdownStatus("");
@@ -64,15 +66,15 @@ function Header() {
 	return (
 		<nav className="NavBar my-3">
 			<Link to="/" className="Logo">
-				<i className="fas fa-book-reader"></i> todoapp
+				<i className="fas fa-book-reader" /> todoapp
 			</Link>
 			{(token && (
 				<div className="profile-dropdown" data-dropdown>
-					<a href="#" className="Profile-Link" onClick={onProfileClickHandler}>
+					<a href="#" className="Control-Link" onClick={onProfileClickHandler}>
 						{userData.username}{" "}
 						<i
 							className={`fas fa-chevron-right profile-arrow ${profileArrowStatus}`}
-						></i>
+						/>
 					</a>
 					<div className={`profile-dropdown-menu ${profileDropdownStatus}`}>
 						<Link to="profile" className="profile-dropdown-item">
@@ -90,7 +92,7 @@ function Header() {
 				</div>
 			)) || (
 				<Link to="/login" className="Control-Link">
-					<i className="fas fa-user"></i> Sign In
+					<i className="fas fa-user" /> Sign In
 				</Link>
 			)}
 		</nav>

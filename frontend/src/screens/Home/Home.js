@@ -2,11 +2,14 @@ import React from "react";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
 import BookPage from "../../images/BookPage.png";
+
 function Home() {
 	const navigate = useNavigate();
+
 	function getStartedHandler() {
 		navigate("/register");
 	}
+
 	return (
 		<div className="Home">
 			<div className="Message">

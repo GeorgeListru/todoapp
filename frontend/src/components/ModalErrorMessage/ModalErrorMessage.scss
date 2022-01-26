@@ -1,0 +1,32 @@
+@import "../../App.scss";
+
+.ErrorModalMessage{
+  width:fit-content;
+  min-width:22rem;
+  max-width: 90%;
+  text-align:center;
+  position:absolute;
+  z-index:99;
+  bottom: 2vh;
+  right: 1rem;
+  background-color: $yellow-color;
+  padding: 1rem 1rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  transition: all 0.25s ease-in-out;
+}
+.NoErrorModalMessage{
+  opacity: 0;
+  transform: translateY(20%);
+}
+@media (max-width: 500px) {
+  .ErrorModalMessage{
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+
+  }
+  .NoErrorModalMessage{
+    transition-delay: 1ms;
+  }
+}

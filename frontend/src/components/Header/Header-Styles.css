@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@500;600;700;800&display=swap");
 * {
   margin: 0;
@@ -8,7 +9,6 @@ a {
   text-decoration: none;
   color: white;
 }
-
 a:hover {
   color: white;
 }
@@ -18,10 +18,21 @@ body {
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .nav-link {
   color: #ffd43b !important;
+}
+
+.h1-header {
+  text-align: center;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  color: #ffd43b;
+  font-size: 2.3rem;
+  margin-top: 7vh;
+  margin-bottom: 4vh;
 }
 
 hr {
@@ -36,8 +47,9 @@ hr {
 .row-fullwidth {
   --bs-gutter-x: 1.5rem !important;
   margin-top: 0;
-  margin-right: 0;
-  margin-left: 0;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  width: 100%;
 }
 
 .disable-cursor {
@@ -45,12 +57,144 @@ hr {
   cursor: auto;
 }
 
+.auth-form {
+  width: 30% !important;
+  min-width: 22rem !important;
+  margin: 0 auto !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.text-input {
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 2.5rem;
+  border: 0;
+  outline: none;
+  width: 100%;
+  background-color: #27ae60;
+  padding: 0 1rem;
+  transition: all 0.15s ease-in-out;
+  color: white;
+}
+
+.text-input:focus {
+  background-color: #6fcf97;
+  color: black;
+  width: 102%;
+  transform: translateX(-1%);
+}
+
+.text-input:focus::placeholder {
+  opacity: 0;
+}
+
+.text-input::placeholder {
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+  color: #e0e0e0;
+}
+
+.text-label {
+  width: fit-content;
+  margin-top: 2vh;
+  font-size: 1.3rem;
+  display: block;
+  color: white;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.checkbox-container .checkbox {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+
+.checkbox-container .checkbox:checked + .checkbox-label::before {
+  content: "✔";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Dosis", sans-serif;
+  background-color: #27ae60;
+}
+
+.checkbox-container .checkbox-label {
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  display: flex;
+}
+
+.checkbox-container .checkbox-label::before {
+  transition: all 0.2s ease-in-out;
+  content: "";
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: #6fcf97;
+  margin-right: 0.5rem;
+}
+
+.green-button {
+  display: flex;
+  padding: 0.1rem 0;
+  text-align: center;
+  justify-content: center;
+  background-color: #27ae60;
+  border: none;
+  color: white;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+}
+
+.green-button:hover {
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.12);
+}
+
+.redirect-link {
+  font-family: "Dosis", sans-serif;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  color: #ffd43b !important;
+}
+
+.redirect-link:hover {
+  opacity: 0.85;
+}
+
+.display-flex-inline {
+  display: flex;
+}
+
+.disable-cursor {
+  pointer-events: none;
+  cursor: auto;
+}
+
+@media all and (max-width: 1000px) {
+  .checkbox-container {
+    margin-top: 0;
+  }
+
+  .auth-form {
+    width: 50% !important;
+  }
+}
 .NavBar {
   width: 60%;
   margin: 0 auto;
   font-family: "Dosis", sans-serif;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
@@ -60,10 +204,8 @@ hr {
   color: #ffd43b;
   font-size: 1.8rem;
   margin-right: auto;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-
 .Logo:hover {
   color: #ffd43b;
   opacity: 0.9;
@@ -71,31 +213,26 @@ hr {
 
 .Control-Link {
   margin-top: auto;
+  margin-bottom: 0.2rem;
   font-weight: 700;
   color: #ffd43b;
   font-size: 1.2rem;
   margin-left: auto;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-
 .Control-Link:hover {
   color: #ffd43b;
   opacity: 0.9;
 }
 
 .Profile-Link {
-  color: #ffd43b !important;
+  color: #ffd43b;
   margin-top: auto;
   font-weight: 700;
   font-size: 1.2rem;
   margin-left: auto;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
-  background-color: transparent;
-  border: none;
 }
-
 .Profile-Link:hover {
   color: #ffd43b;
   opacity: 0.9;
@@ -104,38 +241,28 @@ hr {
 .profile-dropdown {
   position: relative;
   margin-top: auto;
+  margin-bottom: 0.2rem;
 }
 
 .profile-dropdown-menu {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   position: absolute;
   top: 2.2rem;
   background-color: #27ae60;
   border-radius: 0.15rem;
-  -webkit-box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-          box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
   width: 11rem;
   left: -2.25rem;
   opacity: 0;
   pointer-events: none;
-  -webkit-transform: translateY(-0.2rem);
-          transform: translateY(-0.2rem);
-  -webkit-transition: opacity 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
-  transition: opacity 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
+  transform: translateY(-0.2rem);
   transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
-  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
 }
 
 .profile-dropdown-menu-active {
   pointer-events: auto;
-  -webkit-transform: translateY(0);
-          transform: translateY(0);
+  transform: translateY(0);
   opacity: 1;
 }
 
@@ -143,16 +270,12 @@ hr {
   font-size: 0.8rem !important;
   margin-left: 0.1rem !important;
   font-weight: 900;
-  -webkit-transition: -webkit-transform 0.15s ease-in-out;
-  transition: -webkit-transform 0.15s ease-in-out;
   transition: transform 0.15s ease-in-out;
-  transition: transform 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
   vertical-align: center;
 }
 
 .profile-arrow-active {
-  -webkit-transform: rotate(90deg);
-          transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .profile-dropdown-item {
@@ -162,11 +285,16 @@ hr {
   font-family: "Dosis", sans-serif;
   font-weight: 500;
   padding: 0.25rem 0;
-  -webkit-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
 }
-
 .profile-dropdown-item:hover {
   background-color: #219653;
 }
+
+@media all and (max-width: 1000px) {
+  .NavBar {
+    width: 85%;
+  }
+}
+
 /*# sourceMappingURL=Header-Styles.css.map */
