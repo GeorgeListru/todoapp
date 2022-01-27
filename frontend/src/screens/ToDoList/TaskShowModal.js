@@ -1,14 +1,15 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import axios from "axios";
-import { Row, Col } from "react-bootstrap";
+import {Row, Col} from "react-bootstrap";
 import "./TaskShowModal.css";
-import { useSelector, useDispatch } from "react-redux";
-import { setShowModalStatus, replaceTask } from "../../store/TasksListReducer";
+import {useSelector, useDispatch} from "react-redux";
+import {setShowModalStatus, replaceTask} from "../../store/TasksListReducer";
 import FormatDate from "../../functions/FormatDate";
 import FormatFileName from "../../functions/FormatFileName";
 import FileDownload from "js-file-download";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+
 function TaskShowModal() {
 	const userData = useSelector((state) => state.login);
 	const tasksList = useSelector((state) => state.tasks);
@@ -20,7 +21,7 @@ function TaskShowModal() {
 	const [taskCreatedAt, setTaskCreatedAt] = useState(null);
 	const [taskCompletedAt, setTaskCompletedAt] = useState(null);
 	const [filesList, setFilesList] = useState([]);
-	const [areChangesLoading, setAreChangesLoading] = useState("");
+	const [saveStatus, setSaveStatus] = useState("");
 	const [isWindowLoading, setisWindowLoading] = useState(true);
 
 	useEffect(() => {
@@ -32,7 +33,7 @@ function TaskShowModal() {
 					Authorization: "Bearer " + userData.token,
 				},
 			};
-			const body = { id: filteredTask.id };
+			const body = {id: filteredTask.id};
 			const response = await axios.post("todolist/getitem", body, config);
 			if (response.request.status === 200) {
 				const data = response.data;
@@ -43,10 +44,11 @@ function TaskShowModal() {
 				setFilesList(data.files);
 				setTaskNotes(data.notes !== null ? data.notes : "");
 				setTaskIsCompleted(data.isCompleted);
-				setAreChangesLoading("");
+				setSaveStatus("");
 				setisWindowLoading(false);
 			}
 		}
+
 		if (filteredTask) {
 			getTaskDataRequest();
 		}
@@ -63,10 +65,12 @@ function TaskShowModal() {
 
 	function onAddFileHandler(e) {
 		const file = e.target.files[0];
+
 		async function AddFileRequest() {
-			setAreChangesLoading("Uploading file...");
+			setSaveStatus("Uploading file...");
 			let data = new FormData();
 			data.append("file", file);
+			data.append('filename', file.name)
 			data.append("task_id", task.id);
 			const config = {
 				headers: {
@@ -74,12 +78,16 @@ function TaskShowModal() {
 					Authorization: "Bearer " + userData.token,
 				},
 			};
-			const response = await axios.post("todolist/uploadfile", data, config);
-			if (response.request.status === 200) {
+			try {
+				const response = await axios.post("todolist/uploadfile", data, config);
 				setFilesList([...filesList, response.data]);
-				setAreChangesLoading("File uploaded successfully");
+				setSaveStatus("File uploaded successfully");
+			} catch (e) {
+				if (e.response) setSaveStatus(e.response.data.detail)
 			}
+
 		}
+
 		AddFileRequest();
 	}
 
@@ -92,9 +100,9 @@ function TaskShowModal() {
 					Authorization: "Bearer " + userData.token,
 				},
 			};
-			const body = { file_id: id, task_id: task.id };
-			const response = await axios.post("todolist/downloadfile", body, config);
-			if (response.request.status === 200) {
+			const body = {file_id: id, task_id: task.id};
+			try {
+				const response = await axios.post("todolist/downloadfile", body, config);
 				const url = window.URL.createObjectURL(new Blob([response.data]));
 				const filename = response["headers"]["content-disposition"].replace(
 					"attachment; filename=",
@@ -102,64 +110,70 @@ function TaskShowModal() {
 				);
 				const link = document.createElement("a");
 				link.href = url;
-				link.setAttribute("download", filename); //or any other extension
+				link.setAttribute("download", filename);
 				document.body.appendChild(link);
 				link.click();
+			} catch (e) {
+				if (e.response) setSaveStatus(e.response.data.detail)
 			}
 		}
+
 		DownloadFileRequest();
 	}
 
 	function deleteDatabaseFileHandler(id) {
 		async function deleteDatabaseFileRequest() {
-			setAreChangesLoading("Deleting file...");
+			setSaveStatus("Deleting file...");
 			const config = {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: "Bearer " + userData.token,
 				},
 			};
-			const body = { file_id: id, task_id: task.id };
-			const response = await axios.post("todolist/deletefile", body, config);
-			if (response.request.status === 200) {
+			const body = {file_id: id, task_id: task.id};
+			try {
+				const response = await axios.post("todolist/deletefile", body, config);
 				setFilesList(filesList.filter((file) => file.id !== id));
-				setAreChangesLoading("File deleted successfully");
+				setSaveStatus("File deleted successfully");
+			} catch (e) {
+				if (e.response) setSaveStatus(e.response.data.detail)
 			}
+
 		}
+
 		deleteDatabaseFileRequest();
 	}
 
 	useEffect(() => SaveEverythingHandler(), [taskIsCompleted]);
 
 	function SaveEverythingHandler() {
-		let new_task = { ...task };
+		let new_task = {...task};
 		new_task.title = taskTitle;
 		new_task.notes = taskNotes;
 		new_task.isCompleted = taskIsCompleted;
 
 		async function SaveEverythingRequest() {
-			setAreChangesLoading("Saving changes...");
+			setSaveStatus("Saving changes...");
 			const config = {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: "Bearer " + userData.token,
 				},
 			};
-			const response = await axios.post(
-				"todolist/replaceitem",
-				new_task,
-				config
-			);
-			if (response.request.status === 200) {
-				setAreChangesLoading("All changes saved");
+			try {
+				const response = await axios.post("todolist/replaceitem", new_task, config);
+				setSaveStatus("All changes saved");
+			} catch (e) {
+				if (e.response) setSaveStatus(e.response.data.detail)
 			}
 		}
+
 		if (task) SaveEverythingRequest();
 	}
 
 	function closeWindowHandler() {
 		SaveEverythingHandler();
-		let copyTask = { ...filteredTask };
+		let copyTask = {...filteredTask};
 		copyTask.title = taskTitle;
 		copyTask.notes = taskNotes;
 		copyTask.isCompleted = taskIsCompleted;
@@ -167,19 +181,20 @@ function TaskShowModal() {
 		setFilesList([]);
 		setTask(null);
 		dispatch(replaceTask(copyTask));
-		setAreChangesLoading("");
+		setSaveStatus("");
 	}
 
+	console.log(filesList.length)
 	return (
 		<div className={`Task-Modal ${!filteredTask && "hidden"}`}>
 			<div
 				onClick={closeWindowHandler}
 				className={`Overlay ${!filteredTask && "hidden"}`}
-			></div>
+			/>
 			<div
 				className={`Modal-Window ${!filteredTask ? "hiddenModal-Window" : ""}`}
 			>
-				{(isWindowLoading && <LoadingSpinner />) ||
+				{(isWindowLoading && <LoadingSpinner/>) ||
 					(task && (
 						<>
 							<i
@@ -196,18 +211,17 @@ function TaskShowModal() {
 								/>
 								<Row>
 									<Col md={6}>
-										<div className="checkbox-container">
+										<div className="checkbox-container-todo">
 											<input
 												onChange={toggleCompleteHandler}
 												checked={taskIsCompleted}
-												name="remember_me"
 												type="checkbox"
-												id="remember-checkbox"
-												className="remember-checkbox"
+												id="checkbox"
+												className="checkbox"
 											/>
 											<label
-												htmlFor="remember-checkbox"
-												className="remember-label"
+												htmlFor="checkbox"
+												className="checkbox-label"
 											>
 												{taskIsCompleted ? "Completed" : "To Do"}
 											</label>
@@ -239,32 +253,30 @@ function TaskShowModal() {
 												className="Modal-AddFileInput"
 												onChange={onAddFileHandler}
 											/>
-											<label htmlFor="Modal-addFile" className="Modal-AddFile">
-												<i className="fas fa-paperclip Moodal-AddFile-Icon" />
-												{"Choose File (<10MB)"}
-											</label>
+											{filesList.length <= 4 &&
+												<label htmlFor="Modal-addFile" className="Modal-AddFile">
+													<i className="fas fa-paperclip Modal-AddFile-Icon"/>
+													{" Choose File (<10MB)"}
+												</label>
+											}
+
 											<div className="Modal-FileList">
 												{filesList.map((file) => {
 													return (
 														<div className="Modal-File" key={file.id}>
-															<Row>
-																<Col
-																	onClick={() => DownloadFileHandler(file.id)}
-																	md={9}
-																>
-																	{FormatFileName(file.file, "/")}
-																</Col>
-																<Col md={3}>
-																	<div className="Modal-File-Options">
-																		<i
-																			onClick={() =>
-																				deleteDatabaseFileHandler(file.id)
-																			}
-																			className="fas fa-trash Modal-File-Option"
-																		/>
-																	</div>
-																</Col>
-															</Row>
+															<div className={'file-name'}
+															     onClick={() => DownloadFileHandler(file.id)}
+															>
+																{FormatFileName(file.file, "/")}
+															</div>
+															<div className={"delete-file-icon"}>
+																<i
+																	onClick={() =>
+																		deleteDatabaseFileHandler(file.id)
+																	}
+																	className="fas fa-trash Modal-File-Option"
+																/>
+															</div>
 														</div>
 													);
 												})}
@@ -272,11 +284,11 @@ function TaskShowModal() {
 										</div>
 									</Col>
 								</Row>
-								<button onClick={closeWindowHandler} className="Submit_btn">
+								<button onClick={closeWindowHandler} className="close-button">
 									Close
 								</button>
 								<div className="Modal-ChangesLoading">
-									<i>{areChangesLoading}</i>
+									<i>{saveStatus}</i>
 								</div>
 							</div>
 						</>

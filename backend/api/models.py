@@ -31,6 +31,7 @@ class ToDoItemFile(models.Model):
     def __str__(self):
         return self.toDoItem.user.username + ": "+self.toDoItem.title+": File_"+str(self.id)
 
-    def get_file(self):
-        filename = self.file.split("/")[-1]
-        return filename
+    def get_file_name(self):
+        return os.path.basename(self.file.path)
+    def get_file_path(self):
+        return self.file.path

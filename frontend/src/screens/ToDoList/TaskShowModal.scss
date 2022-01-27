@@ -1,261 +1,233 @@
 @import "../../App.scss";
-@import "../Login/Login.scss";
-.Task-Modal {
-	opacity: 1;
-	z-index: 1;
-}
+
 .Modal-Window {
-	min-height: 5rem;
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 55%;
-	top: 23%;
-	background-color: $green-color;
-	box-shadow: 0 0 2rem rgba(0, 0, 0, 0.319);
-	z-index: 2;
-	opacity: 1;
-	transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
-}
-.Overlay {
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.6);
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	backdrop-filter: blur(00.1rem);
-	z-index: 1;
-	opacity: 1;
-	transition: opacity 0.4s linear;
-	visibility: auto;
-}
-.hiddenModal-Window {
-	width: 48%;
-	top: 28%;
-	opacity: 0;
-}
-.hidden {
-	opacity: 0;
-	visibility: hidden;
-	transition: all 0.4s linear;
-}
-.close-Modal {
-	color: $yellow-color;
-	position: absolute;
-	right: 0.5rem;
-	top: 0.3rem;
-	font-size: 2rem;
-	line-height: 2rem;
-	font-weight: 300;
-	cursor: pointer;
-}
-.Modal_Content {
-	text-align: center;
-	margin: 2.5rem 0 1.5rem 0;
-	padding: 0 5%;
-}
-.change-title_Modal {
-	width: 100%;
-	height: 3rem;
-	font-family: "Dosis", sans-serif;
-	font-weight: 600;
-	font-size: 1.2rem;
-	line-height: 2.6rem;
-	border: 0;
-	outline: none;
-	background-color: $light-green-color;
-	padding: 0 1rem;
-	transition: all 0.15s ease-in-out;
-	color: white;
-	&:focus {
-		background-color: $green-white-color;
-		color: black;
-		&::placeholder {
-			opacity: 0;
-		}
-	}
-	&::placeholder {
-		font-weight: 500;
-		transition: all 0.15s ease-in-out;
-		color: $light-grey-color;
-	}
+  min-height: 5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55%;
+  top: 23%;
+  background-color: $green-color;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  opacity: 1;
+  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.checkbox-container {
-	//margin-top: 1rem;
-	display: flex;
-	align-items: center;
-	.remember-checkbox {
-		cursor: pointer;
-		opacity: 0;
-		position: absolute;
-		&:checked + .remember-label {
-			&::before {
-				content: "\002714";
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-family: "Dosis", sans-serif;
-				background-color: $light-green-color;
-			}
-		}
-	}
-	.remember-label {
-		font-family: "Dosis", sans-serif;
-		font-weight: 500;
-		font-size: 1.2rem;
-		color: white;
-		cursor: pointer;
-		display: flex;
-		transition: all 0.3s ease-in-out;
-		&::before {
-			transition: all 0.3s ease-in-out;
-			content: "";
-			width: 1.6rem;
-			height: 1.6rem;
-			background-color: $green-white-color;
-			margin-right: 0.5rem;
-		}
-	}
+.hiddenModal-Window {
+  width: 49%;
+  top: 20%;
+  opacity: 0;
+  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
+}
+
+.Modal_Content {
+  text-align: center;
+  margin: 2.5rem 0 1.5rem 0;
+  padding: 0 5%;
+}
+
+.change-title_Modal {
+  @extend .text-input;
+
+  &:focus {
+    width: 100%;
+    transform: none;
+  }
+}
+
+.checkbox-container-todo {
+  @extend .checkbox-container;
+  margin-top: 1rem;
 }
 
 .Modal-dateInterval {
-	margin-top: 1rem;
-	text-align: right;
-	font-size: 1.2rem;
-	font-family: "Dosis", sans-serif;
-	font-weight: 600;
-	color: white;
+  margin-top: 1rem;
+  text-align: right;
+  font-size: 1.2rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  color: white;
 }
+
 .Modal-notesArea {
-	display: flex;
-	margin-right: auto;
-	margin-top: 1rem;
-	width: 102%;
-	height: 100%;
-	background-color: $light-green-color;
-	outline: none;
-	color: white;
-	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
-	padding: 0.5rem;
-	font-family: "Dosis", sans-serif;
-	font-weight: 500;
-	font-size: 1rem;
-	height: 12rem;
-	border: none;
-	&:focus {
-		color: black;
-		background-color: $green-white-color;
-	}
-	&::placeholder {
-		font-weight: 500;
-		transition: all 0.15s ease-in-out;
-		color: $light-grey-color;
-	}
+  display: flex;
+  margin-right: auto;
+  margin-top: 1rem;
+  width: 102%;
+  background-color: $light-green-color;
+  outline: none;
+  color: white;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+  padding: 0.5rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  height: 12rem;
+  border: none;
+
+  &:focus {
+    color: black;
+    background-color: $green-white-color;
+  }
+
+  &::placeholder {
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+    color: $light-grey-color;
+  }
 }
+
 .Modal-FilesArea {
-	margin-top: 1rem;
-	height: 12rem;
+  margin-top: 1rem;
+  height: 12rem;
 }
+
 .Moodal-AddFile-Icon {
-	font-weight: 500;
-	color: white;
-	padding-right: 0.4rem;
-	transition: color 0.1s ease-in-out;
+  font-weight: 500;
+  color: white;
+  transition: color 0.1s ease-in-out;
 }
+
 .Modal-AddFileInput {
-	display: none;
+  display: none;
 }
+
 .Modal-AddFile {
-	line-height: 1.6rem;
-	cursor: pointer;
-	background-color: $light-green-color;
-	width: 100%;
-	margin-right: auto;
-	text-align: center;
-	color: white;
-	font-family: "Dosis", sans-serif;
-	font-weight: 600;
-	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
-	&:hover {
-		color: white;
-		background-color: $green-color;
-		.Moodal-AddFile-Icon {
-			color: white;
-		}
-	}
+  line-height: 1.6rem;
+  cursor: pointer;
+  background-color: $light-green-color;
+  width: 100%;
+  margin-right: auto;
+  text-align: center;
+  color: white;
+  font-family: "Dosis", sans-serif;
+  font-weight: 600;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+
+  &:hover {
+    color: white;
+    background-color: $green-color;
+  }
 }
+
 .Modal-FileList {
-	height: 10rem;
-	width: 100%;
-	margin-top: 1.1rem;
+  height: 10rem;
+  width: 100%;
+  margin-top: 1.1rem;
 }
+
 .Modal-File {
-	margin-top: 0.4rem;
-	height: 2rem;
-	background-color: $light-green-color;
-	font-size: 1rem;
-	font-family: "Dosis", sans-serif;
-	font-weight: 500;
-	color: white;
-	transition: opacity 0.1s ease-in-out;
-	text-align: left;
-	padding: 0.2rem 0.5rem;
-	cursor: pointer;
-	&:hover {
-		opacity: 0.9;
-		.Modal-File-Option {
-			transform: translateX(-15%);
-			opacity: 1;
-		}
-	}
+  margin-top: 0.4rem;
+  height: 2rem;
+  background-color: $light-green-color;
+  font-size: 1rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  color: white;
+  transition: opacity 0.1s ease-in-out;
+  text-align: left;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &:hover {
+    opacity: 0.9;
+
+    .Modal-File-Option {
+      opacity: 1;
+      pointer-events: auto;
+      margin-left: auto;
+    }
+  }
+
+  .file-name {
+    margin: auto 0;
+    width: 90%;
+    @extend .no-text-overflow;
+  }
+
+  .delete-file-icon {
+    width: 10%;
+    text-align: right;
+  }
 }
-.Modal-File-NotUploaded {
-	color: $yellow-color;
-}
+
 .Modal-File-Options {
-	text-align: right;
+  width: fit-content;
+  margin: auto 0;
 }
+
 .Modal-File-Option {
-	margin-left: 0.5rem;
-	transition: opacity 0.2s ease-in-out, transform 0.3s ease-in-out,
-		color 0.2s ease-in-out;
-	opacity: 0;
-	&:hover {
-		opacity: 0.8;
-		color: $yellow-color;
-	}
+  font-size: 1rem;
+  line-height: 2rem;
+  transform: translateY(-10%);
+  transition: all 0.15s ease-in-out;
+  margin-left: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+
+  &:hover {
+    opacity: 0.8;
+    color: $yellow-color;
+  }
 }
-.Submit_btn {
-	font-weight: 600;
-	margin-left: auto;
-	margin-top: 1rem;
-	display: flex;
-	width: 10rem;
-	padding: 0.1rem 0;
-	font-size: 1.3rem;
-	text-align: center;
-	justify-content: center;
-	background-color: $light-green-color;
-	font-family: "Dosis", sans-serif;
-	font-weight: 500;
-	border: none;
-	color: white;
-	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
-	transition: all 0.3s ease-in-out;
-	&:hover {
-		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.104);
-	}
+
+.close-button {
+  @extend .green-button;
+  margin-left: auto;
+  margin-top: 1rem;
+  width: 10rem;
+  font-size: 1.2rem;
 }
+
 .Modal-ChangesLoading {
-	position: absolute;
-	left: 0.8rem;
-	bottom: 0.4rem;
-	font-family: "Dosis", sans-serif;
-	font-weight: 500;
-	opacity: 0.5;
-	color: white;
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.4rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  opacity: 0.5;
+  color: white;
+}
+
+@media all and (max-width: 1000px) {
+  .Modal-Window {
+    width: 85%;
+
+  }
+}
+
+@media all and (max-width: 600px) {
+  .Modal-Window {
+    width: 100%;
+    top: auto;
+    bottom: 0;
+  }
+  .hiddenModal-Window {
+    width: 100%;
+    top: auto;
+    bottom: -100%;
+  }
+}
+
+@media all and (max-width: 1100px) {
+  .Modal-File-Option {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .Modal-File-Option {
+    font-size: .9rem;
+  }
+  .Modal-File {
+    font-size: .8rem;
+
+    &:hover {
+      .Modal-File-Option {
+        transition: none;
+      }
+    }
+  }
 }

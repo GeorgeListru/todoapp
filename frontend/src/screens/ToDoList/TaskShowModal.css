@@ -1,6 +1,5 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@500;600;700;800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@500;600;700;800&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -20,6 +19,11 @@ body {
   height: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
+}
+
+.no-text-overflow, .Modal-File .file-name {
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .nav-link {
@@ -65,7 +69,7 @@ hr {
   transition: all 0.3s ease-in-out !important;
 }
 
-.text-input {
+.text-input, .change-title_Modal {
   font-family: "Dosis", sans-serif;
   font-weight: 600;
   font-size: 1.1rem;
@@ -79,18 +83,18 @@ hr {
   color: white;
 }
 
-.text-input:focus {
+.text-input:focus, .change-title_Modal:focus {
   background-color: #6fcf97;
   color: black;
   width: 102%;
   transform: translateX(-1%);
 }
 
-.text-input:focus::placeholder {
+.text-input:focus::placeholder, .change-title_Modal:focus::placeholder {
   opacity: 0;
 }
 
-.text-input::placeholder {
+.text-input::placeholder, .change-title_Modal::placeholder {
   font-weight: 500;
   transition: all 0.15s ease-in-out;
   color: #e0e0e0;
@@ -106,19 +110,17 @@ hr {
   font-weight: 500;
 }
 
-.checkbox-container {
+.checkbox-container, .checkbox-container-todo {
   display: flex;
   align-items: center;
   width: fit-content;
 }
-
-.checkbox-container .checkbox {
+.checkbox-container .checkbox, .checkbox-container-todo .checkbox {
   cursor: pointer;
   opacity: 0;
   position: absolute;
 }
-
-.checkbox-container .checkbox:checked + .checkbox-label::before {
+.checkbox-container .checkbox:checked + .checkbox-label::before, .checkbox-container-todo .checkbox:checked + .checkbox-label::before {
   content: "✔";
   display: flex;
   justify-content: center;
@@ -126,8 +128,7 @@ hr {
   font-family: "Dosis", sans-serif;
   background-color: #27ae60;
 }
-
-.checkbox-container .checkbox-label {
+.checkbox-container .checkbox-label, .checkbox-container-todo .checkbox-label {
   font-family: "Dosis", sans-serif;
   font-weight: 500;
   font-size: 1.2rem;
@@ -135,8 +136,7 @@ hr {
   cursor: pointer;
   display: flex;
 }
-
-.checkbox-container .checkbox-label::before {
+.checkbox-container .checkbox-label::before, .checkbox-container-todo .checkbox-label::before {
   transition: all 0.2s ease-in-out;
   content: "";
   width: 1.6rem;
@@ -145,7 +145,7 @@ hr {
   margin-right: 0.5rem;
 }
 
-.green-button, .login-button {
+.green-button, .close-button {
   display: flex;
   padding: 0.1rem 0;
   text-align: center;
@@ -155,289 +155,20 @@ hr {
   color: white;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease-in-out;
+  font-family: "Dosis", sans-serif;
 }
 
-.green-button:hover, .login-button:hover {
+.green-button:hover, .close-button:hover {
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.12);
 }
 
-.redirect-link, .login-redirect, .reset_redirect {
+.redirect-link {
   font-family: "Dosis", sans-serif;
   width: fit-content;
   display: flex;
   justify-content: center;
   transition: all 0.2s ease-in-out;
   color: #ffd43b !important;
-}
-
-.redirect-link:hover, .login-redirect:hover, .reset_redirect:hover {
-  opacity: 0.85;
-}
-
-.display-flex-inline {
-  display: flex;
-}
-
-.disable-cursor {
-  pointer-events: none;
-  cursor: auto;
-}
-
-@media all and (max-width: 1000px) {
-  .checkbox-container {
-    margin-top: 0;
-  }
-
-  .auth-form {
-    width: 50% !important;
-  }
-}
-* {
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  text-decoration: none;
-  color: white;
-}
-a:hover {
-  color: white;
-}
-
-body {
-  background-color: #219653;
-  width: 100%;
-  height: 100%;
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
-
-.nav-link {
-  color: #ffd43b !important;
-}
-
-.h1-header {
-  text-align: center;
-  font-family: "Dosis", sans-serif;
-  font-weight: 600;
-  color: #ffd43b;
-  font-size: 2.3rem;
-  margin-top: 7vh;
-  margin-bottom: 4vh;
-}
-
-hr {
-  margin: 0;
-  padding: 0;
-}
-
-.col {
-  padding: 0 !important;
-}
-
-.row-fullwidth {
-  --bs-gutter-x: 1.5rem !important;
-  margin-top: 0;
-  margin-right: 0 !important;
-  margin-left: 0 !important;
-  width: 100%;
-}
-
-.disable-cursor {
-  pointer-events: none;
-  cursor: auto;
-}
-
-.auth-form {
-  width: 30% !important;
-  min-width: 22rem !important;
-  margin: 0 auto !important;
-  transition: all 0.3s ease-in-out !important;
-}
-
-.text-input {
-  font-family: "Dosis", sans-serif;
-  font-weight: 600;
-  font-size: 1.1rem;
-  line-height: 2.5rem;
-  border: 0;
-  outline: none;
-  width: 100%;
-  background-color: #27ae60;
-  padding: 0 1rem;
-  transition: all 0.15s ease-in-out;
-  color: white;
-}
-
-.text-input:focus {
-  background-color: #6fcf97;
-  color: black;
-  width: 102%;
-  transform: translateX(-1%);
-}
-
-.text-input:focus::placeholder {
-  opacity: 0;
-}
-
-.text-input::placeholder {
-  font-weight: 500;
-  transition: all 0.15s ease-in-out;
-  color: #e0e0e0;
-}
-
-.text-label {
-  width: fit-content;
-  margin-top: 2vh;
-  font-size: 1.3rem;
-  display: block;
-  color: white;
-  font-family: "Dosis", sans-serif;
-  font-weight: 500;
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-}
-
-.checkbox-container .checkbox {
-  cursor: pointer;
-  opacity: 0;
-  position: absolute;
-}
-
-.checkbox-container .checkbox:checked + .checkbox-label::before {
-  content: "✔";
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Dosis", sans-serif;
-  background-color: #27ae60;
-}
-
-.checkbox-container .checkbox-label {
-  font-family: "Dosis", sans-serif;
-  font-weight: 500;
-  font-size: 1.2rem;
-  color: white;
-  cursor: pointer;
-  display: flex;
-}
-
-.checkbox-container .checkbox-label::before {
-  transition: all 0.2s ease-in-out;
-  content: "";
-  width: 1.6rem;
-  height: 1.6rem;
-  background-color: #6fcf97;
-  margin-right: 0.5rem;
-}
-
-.green-button, .login-button {
-  display: flex;
-  padding: 0.1rem 0;
-  text-align: center;
-  justify-content: center;
-  background-color: #27ae60;
-  border: none;
-  color: white;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease-in-out;
-}
-
-.green-button:hover, .login-button:hover {
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.12);
-}
-
-.redirect-link, .login-redirect, .reset_redirect {
-  font-family: "Dosis", sans-serif;
-  width: fit-content;
-  display: flex;
-  justify-content: center;
-  transition: all 0.2s ease-in-out;
-  color: #ffd43b !important;
-}
-
-.redirect-link:hover, .login-redirect:hover, .reset_redirect:hover {
-  opacity: 0.85;
-}
-
-.display-flex-inline {
-  display: flex;
-}
-
-.disable-cursor {
-  pointer-events: none;
-  cursor: auto;
-}
-
-@media all and (max-width: 1000px) {
-  .checkbox-container {
-    margin-top: 0;
-  }
-
-  .auth-form {
-    width: 50% !important;
-  }
-}
-.confirm-section {
-  margin-top: 1.5rem !important;
-}
-
-.custom-Loading-Spinner {
-  margin-top: 3rem;
-}
-
-.login-button {
-  font-weight: 500;
-  margin-left: auto;
-  min-width: 12rem;
-  width: 12rem;
-  font-size: 1.3rem;
-}
-
-.reset_redirect {
-  margin-top: auto;
-  margin-bottom: 0.1rem;
-  margin-left: auto;
-}
-
-.login-redirect {
-  margin: 4vh auto 0;
-}
-
-@media all and (max-width: 1000px) {
-  .login-button {
-    width: 100%;
-    margin: 0.8rem auto 0;
-  }
-
-  .confirm-section {
-    margin-top: 1rem !important;
-    display: flex;
-    flex-direction: column;
-  }
-}
-.Task-Modal {
-  opacity: 1;
-  z-index: 1;
-}
-
-.Modal-Window {
-  min-height: 5rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 55%;
-  top: 23%;
-  background-color: #219653;
-  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.319);
-  z-index: 2;
-  opacity: 1;
-  transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .Overlay {
@@ -453,19 +184,26 @@ hr {
   z-index: 1;
   opacity: 1;
   transition: opacity 0.4s linear;
-  visibility: auto;
-}
-
-.hiddenModal-Window {
-  width: 48%;
-  top: 28%;
-  opacity: 0;
+  visibility: visible;
 }
 
 .hidden {
   opacity: 0;
   visibility: hidden;
   transition: all 0.4s linear;
+}
+
+.redirect-link:hover {
+  opacity: 0.85;
+}
+
+.display-flex-inline {
+  display: flex;
+}
+
+.disable-cursor {
+  pointer-events: none;
+  cursor: auto;
 }
 
 .close-Modal {
@@ -479,72 +217,49 @@ hr {
   cursor: pointer;
 }
 
+@media all and (max-width: 1000px) {
+  .checkbox-container, .checkbox-container-todo {
+    margin-top: 0;
+  }
+
+  .auth-form {
+    width: 50% !important;
+  }
+}
+.Modal-Window {
+  min-height: 5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55%;
+  top: 23%;
+  background-color: #219653;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  opacity: 1;
+  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.hiddenModal-Window {
+  width: 49%;
+  top: 20%;
+  opacity: 0;
+  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
+}
+
 .Modal_Content {
   text-align: center;
   margin: 2.5rem 0 1.5rem 0;
   padding: 0 5%;
 }
 
-.change-title_Modal {
-  width: 100%;
-  height: 3rem;
-  font-family: "Dosis", sans-serif;
-  font-weight: 600;
-  font-size: 1.2rem;
-  line-height: 2.6rem;
-  border: 0;
-  outline: none;
-  background-color: #27ae60;
-  padding: 0 1rem;
-  transition: all 0.15s ease-in-out;
-  color: white;
-}
 .change-title_Modal:focus {
-  background-color: #6fcf97;
-  color: black;
-}
-.change-title_Modal:focus::placeholder {
-  opacity: 0;
-}
-.change-title_Modal::placeholder {
-  font-weight: 500;
-  transition: all 0.15s ease-in-out;
-  color: #e0e0e0;
+  width: 100%;
+  transform: none;
 }
 
-.checkbox-container {
-  display: flex;
-  align-items: center;
-}
-.checkbox-container .remember-checkbox {
-  cursor: pointer;
-  opacity: 0;
-  position: absolute;
-}
-.checkbox-container .remember-checkbox:checked + .remember-label::before {
-  content: "✔";
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Dosis", sans-serif;
-  background-color: #27ae60;
-}
-.checkbox-container .remember-label {
-  font-family: "Dosis", sans-serif;
-  font-weight: 500;
-  font-size: 1.2rem;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  transition: all 0.3s ease-in-out;
-}
-.checkbox-container .remember-label::before {
-  transition: all 0.3s ease-in-out;
-  content: "";
-  width: 1.6rem;
-  height: 1.6rem;
-  background-color: #6fcf97;
-  margin-right: 0.5rem;
+.checkbox-container-todo {
+  margin-top: 1rem;
 }
 
 .Modal-dateInterval {
@@ -561,7 +276,6 @@ hr {
   margin-right: auto;
   margin-top: 1rem;
   width: 102%;
-  height: 100%;
   background-color: #27ae60;
   outline: none;
   color: white;
@@ -591,7 +305,6 @@ hr {
 .Moodal-AddFile-Icon {
   font-weight: 500;
   color: white;
-  padding-right: 0.4rem;
   transition: color 0.1s ease-in-out;
 }
 
@@ -615,9 +328,6 @@ hr {
   color: white;
   background-color: #219653;
 }
-.Modal-AddFile:hover .Moodal-AddFile-Icon {
-  color: white;
-}
 
 .Modal-FileList {
   height: 10rem;
@@ -637,53 +347,51 @@ hr {
   text-align: left;
   padding: 0.2rem 0.5rem;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .Modal-File:hover {
   opacity: 0.9;
 }
 .Modal-File:hover .Modal-File-Option {
-  transform: translateX(-15%);
   opacity: 1;
+  pointer-events: auto;
+  margin-left: auto;
 }
-
-.Modal-File-NotUploaded {
-  color: #ffd43b;
+.Modal-File .file-name {
+  margin: auto 0;
+  width: 90%;
 }
-
-.Modal-File-Options {
+.Modal-File .delete-file-icon {
+  width: 10%;
   text-align: right;
 }
 
+.Modal-File-Options {
+  width: fit-content;
+  margin: auto 0;
+}
+
 .Modal-File-Option {
+  font-size: 1rem;
+  line-height: 2rem;
+  transform: translateY(-10%);
+  transition: all 0.15s ease-in-out;
   margin-left: 0.5rem;
-  transition: opacity 0.2s ease-in-out, transform 0.3s ease-in-out, color 0.2s ease-in-out;
   opacity: 0;
+  pointer-events: none;
 }
 .Modal-File-Option:hover {
   opacity: 0.8;
   color: #ffd43b;
 }
 
-.Submit_btn {
-  font-weight: 600;
+.close-button {
   margin-left: auto;
   margin-top: 1rem;
-  display: flex;
   width: 10rem;
-  padding: 0.1rem 0;
-  font-size: 1.3rem;
-  text-align: center;
-  justify-content: center;
-  background-color: #27ae60;
-  font-family: "Dosis", sans-serif;
-  font-weight: 500;
-  border: none;
-  color: white;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
-  transition: all 0.3s ease-in-out;
-}
-.Submit_btn:hover {
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.104);
+  font-size: 1.2rem;
 }
 
 .Modal-ChangesLoading {
@@ -694,6 +402,42 @@ hr {
   font-weight: 500;
   opacity: 0.5;
   color: white;
+}
+
+@media all and (max-width: 1000px) {
+  .Modal-Window {
+    width: 85%;
+  }
+}
+@media all and (max-width: 600px) {
+  .Modal-Window {
+    width: 100%;
+    top: auto;
+    bottom: 0;
+  }
+
+  .hiddenModal-Window {
+    width: 100%;
+    top: auto;
+    bottom: -100%;
+  }
+}
+@media all and (max-width: 1100px) {
+  .Modal-File-Option {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .Modal-File-Option {
+    font-size: 0.9rem;
+  }
+
+  .Modal-File {
+    font-size: 0.8rem;
+  }
+  .Modal-File:hover .Modal-File-Option {
+    transition: none;
+  }
 }
 
 /*# sourceMappingURL=TaskShowModal.css.map */

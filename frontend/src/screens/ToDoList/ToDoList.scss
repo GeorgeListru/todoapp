@@ -1,308 +1,375 @@
 @import "../../App.scss";
+
 .todolist {
-	scroll-behavior: smooth;
-	width: 58%;
-	height: 60vh;
-	margin: 0 auto;
-	transition: all 0.3s ease-in-out;
-	&::-webkit-scrollbar {
-		width: 0.5vw;
-		position: fixed;
-	}
-	&::-webkit-scrollbar-thumb {
-		background-color: $light-green-color;
-		transition: all 0.5s ease-in;
-		&:hover {
-			background-color: $green-white-color;
-		}
-	}
-	&::-webkit-scrollbar-track {
-		position: fixed;
-		background-color: transparent;
-	}
-	overflow-y: overlay;
-	overflow-x: hidden;
+  scroll-behavior: smooth;
+  width: 58%;
+  height: 60vh;
+  margin: 0 auto;
+  transition: all 0.3s ease-in-out;
+
+  &::-webkit-scrollbar {
+    width: 0.5vw;
+    position: fixed;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $light-green-color;
+    transition: all 0.5s ease-in;
+
+    &:hover {
+      background-color: $green-white-color;
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    position: fixed;
+    background-color: transparent;
+  }
+
+  overflow-y: overlay;
+  overflow-x: hidden;
 }
 
 .todolist-item {
-	margin-left: auto;
-	margin-right: auto;
-	width: 92%;
-	margin-bottom: 1.25rem;
-	cursor: pointer;
-	background-color: $light-green-color;
-	border-radius: 0.5rem;
-	padding: 0.3rem 0;
-	transition: all 0.2s ease-in-out, opacity 0.5s ease-in-out,
-		transform 0.5s ease-in-out;
-	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
-	transform: translateX(0%);
-	&:hover {
-		background-color: $green-white-color;
-		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.097);
-		width: 94%;
-		transform: translateX(0%);
-		.todolist-item-title {
-			color: white;
-		}
-		.todolist-item-circle {
-			color: white;
-		}
-	}
+  margin-left: auto;
+  margin-right: auto;
+  width: 92%;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
+  background-color: $light-green-color;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0;
+  transition: all 0.2s ease-in-out, opacity 0.5s ease-in-out,
+  transform 0.5s ease-in-out;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.028);
+  transform: translateX(0%);
+
+  &:hover {
+    background-color: $green-white-color;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.097);
+    width: 94%;
+    transform: translateX(0%);
+
+    .todolist-item-title {
+      color: white;
+    }
+
+    .todolist-item-circle {
+      color: white;
+    }
+  }
 }
+
 .todolist-item-changing {
-	opacity: 0;
-	cursor: auto;
-	pointer-events: none;
-	transform: translateY(-1rem);
+  opacity: 0;
+  cursor: auto;
+  pointer-events: none;
+  transform: translateY(-1rem);
 }
+
 .todolist-item-circle {
-	margin: auto 0;
-	margin-left: 1.2rem;
-	font-size: 2.3rem;
-	line-height: 2.8rem;
-	color: $yellow-color;
-	transition: color 0.2s ease-in-out;
+  margin: auto 0 auto 1.2rem;
+  font-size: 2.3rem;
+  line-height: 2.8rem;
+  color: $yellow-color;
+  transition: color 0.2s ease-in-out;
 }
+
 .todolist-item-title {
-	width: fit-content;
-	height: fit-content;
-	line-height: 2.8rem;
-	font-size: 1.5rem;
-	margin-top: auto;
-	color: $light-grey-color;
-	font-family: "Dosis", sans-serif;
-	font-weight: 500;
-	transition: all 0.2s ease-in-out;
+  width: fit-content;
+  height: fit-content;
+  line-height: 2.8rem;
+  font-size: 1.5rem;
+  margin-top: auto;
+  color: $light-grey-color;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  @extend .no-text-overflow;
 }
 
 @keyframes strike {
-	0% {
-		width: 0;
-	}
-	100% {
-		width: 100%;
-	}
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
+
 @keyframes strike-reverse {
-	100% {
-		width: 0;
-	}
-	0% {
-		width: 100%;
-	}
+  100% {
+    width: 0;
+  }
+  0% {
+    width: 100%;
+  }
 }
+
 .strike-reverse {
-	position: relative;
+  position: relative;
 }
+
 .strike-reverse::after {
-	content: " ";
-	position: absolute;
-	top: 50%;
-	left: 0;
-	width: 100%;
-	height: 0.1rem;
-	background: white;
-	animation-name: strike-reverse;
-	animation-duration: 0.3s;
-	animation-timing-function: linear;
-	animation-iteration-count: 1;
-	animation-fill-mode: forwards;
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 0.1rem;
+  background: white;
+  animation-name: strike-reverse;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
+
 .strike {
-	position: relative;
+  position: relative;
 }
+
 .strike::after {
-	content: " ";
-	position: absolute;
-	top: 50%;
-	left: 0;
-	width: 100%;
-	height: 0.1rem;
-	background: white;
-	animation-name: strike;
-	animation-duration: 0.3s;
-	animation-timing-function: linear;
-	animation-iteration-count: 1;
-	animation-fill-mode: forwards;
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 0.1rem;
+  background: white;
+  animation-name: strike;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
+
 .striked-text {
-	text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 .todolist-item-created-date {
-	width: fit-content;
-	margin-left: auto;
-	line-height: 2.8rem;
-	margin-right: 1rem;
-	font-family: "Dosis", sans-serif;
-	font-weight: 500;
-	color: white;
-	font-size: 1.2rem;
-	transition: all 0.2s ease-in-out;
+  width: fit-content;
+  margin-left: auto;
+  line-height: 2.8rem;
+  margin-right: 1rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  color: white;
+  font-size: 1.2rem;
+  transition: all 0.2s ease-in-out;
 }
+
 .date-hover {
-	transform: translateX(-2.5rem);
+  transform: translateX(-2.5rem);
 }
+
 .todolist-item-trashcan {
-	position: absolute;
-	right: 1.2rem;
-	font-size: 1.5rem;
-	line-height: 2.8rem;
-	color: white;
-	transition: opacity 0.2s ease-in-out, transform 0.3s ease-in-out;
-	opacity: 0;
-	pointer-events: none;
-	&:hover {
-		opacity: 0.9;
-		transform: scale(1.2);
-	}
+  position: absolute;
+  right: 1.2rem;
+  font-size: 1.5rem;
+  line-height: 2.8rem;
+  color: white;
+  transition: opacity 0.2s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.2);
+  }
 }
+
 .trashcan-hover {
-	opacity: 1;
-	pointer-events: auto;
+  opacity: 1;
+  pointer-events: auto;
 }
+
 .right-section {
-	display: flex;
+  display: flex;
 }
+
 .add-to-do-item-button {
-	cursor: pointer;
-	height: 2.5rem;
-	width: 12rem;
-	margin: 0 auto;
-	text-align: center;
-	position: absolute;
-	bottom: 3rem;
-	left: 50%;
-	transform: translateX(-50%);
-	background-color: rgba(0, 0, 0, 0.1);
-	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
-	transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out,
-		width 0.2s ease-in-out, height 0.2s ease-in-out;
-	&:hover {
-		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-		background-color: rgba(0, 0, 0, 0.15);
-	}
+  cursor: pointer;
+  height: 2.5rem;
+  width: 12rem;
+  margin: 0 auto;
+  text-align: center;
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out,
+  width 0.2s ease-in-out, height 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.15);
+  }
 }
+
 .add-todo-item-icon {
-	font-size: 2rem;
-	font-weight: 500;
-	color: $yellow-color;
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
+  font-size: 2rem;
+  font-weight: 500;
+  color: $yellow-color;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
+
 .enter-item-box {
-	width: 30%;
-	height: 2.5rem;
-	cursor: pointer;
-	transition: all 0.15s ease-in-out;
+  width: 30%;
+  height: 2.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
 }
+
 .enter-task-input {
-	width: 100%;
-	height: 2.5rem;
-	font-family: "Dosis", sans-serif;
-	font-weight: 600;
-	font-size: 1.1rem;
-	line-height: 2.5rem;
-	border: 0;
-	outline: none;
-	background-color: $light-green-color;
-	padding: 0 1rem;
-	transition: all 0.15s ease-in-out;
-	color: white;
-	&:focus {
-		background-color: $green-white-color;
-		color: black;
-		&::placeholder {
-			opacity: 0;
-		}
-	}
-	&::placeholder {
-		font-weight: 500;
-		transition: all 0.15s ease-in-out;
-		color: $light-grey-color;
-	}
+  @extend .text-input;
+
+  &:focus {
+    width: 100%;
+    transform: none;
+  }
 }
+
 .add-to-list-icon {
-	font-size: 1.5rem;
-	line-height: 2.5rem;
-	font-weight: 600;
-	color: $yellow-color;
-	position: relative;
-	margin: 0 auto;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  font-weight: 600;
+  color: $yellow-color;
+  position: relative;
+  margin: 0 auto;
 }
 
 .todolist-tabs {
-	position: absolute;
-	right: 14%;
-	display: flex;
-	flex-direction: column;
+  position: absolute;
+  right: 14%;
+  display: flex;
+  flex-direction: column;
 }
-@media all and (max-width: 1350px){
-	.todolist-tabs {
-		right: 10%;
-	}
+
+@media all and (max-width: 1350px) {
+  .todolist-tabs {
+    right: 10%;
+  }
 }
+
 .todolist-tab-page {
-	padding: 0.25rem 0;
-	cursor: pointer;
-	padding-left: 0.2rem;
-	font-family: "Dosis", sans-serif;
-	font-size: 1.2rem;
-	font-weight: 600;
-	border-left: 0.2rem solid transparent;
-	color: white;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  padding-left: 0.2rem;
+  font-family: "Dosis", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-left: 0.2rem solid transparent;
+  color: white;
 }
+
 .todolist-tabs-current-page {
-	cursor: auto;
-	pointer-events: none;
-	border-left: 0.2rem solid transparent;
+  cursor: auto;
+  pointer-events: none;
+  border-left: 0.2rem solid transparent;
 }
+
 .tabline {
-	position: absolute;
-	width: 0.15rem;
-	height: calc(40%);
-	background-color: $yellow-color;
-	top: 0.15rem;
-	transition: all 0.2s ease-in-out;
+  position: absolute;
+  width: 0.15rem;
+  height: calc(40%);
+  background-color: $yellow-color;
+  top: 0.15rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .tabline-down {
-	top: 75%;
-	transform: translateY(-50%);
+  top: 75%;
+  transform: translateY(-50%);
 }
 
-@media all and (max-width: 1000px){
-	.todolist{
-		width:90%;
-		height: 60vh;
-	}
-	.todolist-tabs {
-		position: absolute;
-		bottom: 11%;
-		flex-direction: row;
-		width: 25%;
-		justify-content: space-between;
-		left: 50%;
-		transform: translateX(-50%);
-	}
-	.tabline {
-		left: 0;
-		top: auto;
-		height: 0.2rem;
-		width: 25%;
-		transition: all 0.2s ease-in-out;
-	}
-	.tabline-down {
-		top: auto;
-		left: 60%;
-		width: 40%;
-	}
-	.enter-item-box {
-		width: 60%;
-	}
-	.add-to-do-item-button {
-		bottom: 2.5rem;
-	}
+@media all and (max-width: 768px) {
+  .todolist {
+    height: 54vh !important;
+  }
+  .todolist-item-title {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    font-size: larger;
+    height: fit-content;
+  }
+  .todolist-item {
+    height: 6.2rem;
+    padding: .3rem;
+    margin-bottom: 1rem;
+  }
+  .todolist-item-circle {
+    position: absolute;
+    bottom: .4rem;
+    left: 1rem;
+  }
+  .right-section {
+    position: absolute;
+    bottom: .4rem;
+    right: 0;
+    width: fit-content;
+  }
+  .todolist-tabs {
+    width: 50% !important;
+    bottom: 13% !important;
+  }
+  .enter-item-box {
+    width: 85% !important;
+  }
+  .enter-task-input {
+    width: 90% !important;
+    left: 0 !important;
+    position: absolute;
+  }
+  .add-item-button {
+    width: 10% !important;
+    position: absolute;
+    right: 0 !important
+  }
+}
+
+@media all and (max-width: 1200px) {
+  .todolist-item-circle {
+    margin: 0 auto;
+    justify-content: center;
+    display: flex;
+  }
+  .todolist {
+    width: 90%;
+    height: 60vh;
+  }
+  .todolist-tabs {
+    position: absolute;
+    bottom: 11%;
+    flex-direction: row;
+    width: 25%;
+    justify-content: space-between;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .tabline {
+    left: 1%;
+    top: auto;
+    height: 0.2rem;
+    width: 25%;
+    transition: all 0.2s ease-in-out;
+  }
+  .tabline-down {
+    top: auto;
+    left: 59%;
+    width: 40%;
+  }
+  .enter-item-box {
+    width: 60%;
+  }
+  .add-to-do-item-button {
+    bottom: 2.5rem;
+  }
 }

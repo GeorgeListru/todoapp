@@ -73,73 +73,95 @@ def GetUserProfile(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def GetUserToDoList(request):
-    user = request.user
-    todoList=ToDoItem.objects.filter(user= user).order_by('-createdAt')
-    listSerializer = ToDoItemSerializer(todoList, many=True)
-    return Response(listSerializer.data)
-
+    try:
+        user = request.user
+        if User.objects.filter(pk=user.id).exists():
+            todoList=ToDoItem.objects.filter(user= user).order_by('-createdAt')
+            listSerializer = ToDoItemSerializer(todoList, many=True)
+            return Response(listSerializer.data)
+        message={'detail':'The user does not exist'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message={'detail':'We can\'t process your request'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def AddInToDoList(request):
-    user = request.user
-    data = request.data
-    todoItem = ToDoItem.objects.create(
-        user=user,
-        title = data['title'],
-    )
-    serializedToDoItem = ToDoItemSerializer(todoItem, many=False)
-    return Response(serializedToDoItem.data)
+    try:
+        user = request.user
+        data = request.data
+        todoItem = ToDoItem.objects.create(
+            user=user,
+            title = data['title'],
+        )
+        serializedToDoItem = ToDoItemSerializer(todoItem, many=False)
+        return Response(serializedToDoItem.data)
+    except:
+        message={'detail':'We can\'t process your request'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def RemoveItemFromToDoList(request):
-    user = request.user
-    item_id = request.data['id']
-    todoList=ToDoItem.objects.filter(user=user)
-    toDeleteItem = ToDoItem.objects.get(pk=item_id)
-    if toDeleteItem in todoList:
-        toDeleteItem.delete()
-        message = {'message': 'Item no. '+str(item_id)+ " was deleted successfully!"}
-        return Response(message, status=status.HTTP_200_OK)
-    message = {'message': "No Authorization provided"}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = request.user
+        item_id = request.data['id']
+        todoList=ToDoItem.objects.filter(user=user)
+        toDeleteItem = ToDoItem.objects.get(pk=item_id)
+        if toDeleteItem in todoList:
+            toDeleteItem.delete()
+            message = {'detail': 'Item no. '+str(item_id)+ " was deleted successfully"}
+            return Response(message, status=status.HTTP_200_OK)
+        message = {'detail': 'Item no. '+str(item_id)+ " does not exist"}
+        return Response(message, status=status.HTTP_409_CONFLICT)
+    except:
+        message={'detail':'We can\'t process your request'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def ChangeCompletedStatus(request):
-    user = request.user
-    item_id = request.data['id']
-    todoList=ToDoItem.objects.filter(user=user)
-    toModifyItem = ToDoItem.objects.get(pk=item_id)
-    if toModifyItem in todoList:
-        toModifyItem.isCompleted = not(toModifyItem.isCompleted)
-        if toModifyItem.isCompleted == True:
-            toModifyItem.completedAt = timezone.now()
-        else:
-            toModifyItem.completedAt = None
-        toModifyItem.save()
-        serializedToDoItem = ToDoItemSerializer(toModifyItem, many=False)
-        return Response(serializedToDoItem.data)
-    message = {'message':'No Authorization provided'}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = request.user
+        item_id = request.data['id']
+        todoList=ToDoItem.objects.filter(user=user)
+        toModifyItem = ToDoItem.objects.get(pk=item_id)
+        if toModifyItem in todoList:
+            toModifyItem.isCompleted = not(toModifyItem.isCompleted)
+            if toModifyItem.isCompleted == True:
+                toModifyItem.completedAt = timezone.now()
+            else:
+                toModifyItem.completedAt = None
+            toModifyItem.save()
+            serializedToDoItem = ToDoItemSerializer(toModifyItem, many=False)
+            return Response(serializedToDoItem.data)
+        message = {'detail': 'Item no. '+str(item_id)+ " does not exist"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail':'We can\'t process your request'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def GetToDoListItem(request):
-    user = request.user
-    item_id = request.data['id']
-    todoList=ToDoItem.objects.filter(user=user)
-    task = ToDoItem.objects.get(pk=item_id)
-    if task in todoList:
-        fileList = ToDoItemFile.objects.filter(toDoItem=task)
-        taskSerializer = ToDoItemSerializer(task, many=False)
-        fileListSerializer = ToDoItemFileSerializer(fileList, many=True)
-        responseData = taskSerializer.data
-        responseData['files'] = fileListSerializer.data
-        return Response(responseData)
-    message = {'message':'No Authorization provided'}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = request.user
+        item_id = request.data['id']
+        todoList=ToDoItem.objects.filter(user=user)
+        task = ToDoItem.objects.get(pk=item_id)
+        if task in todoList:
+            fileList = ToDoItemFile.objects.filter(toDoItem=task)
+            taskSerializer = ToDoItemSerializer(task, many=False)
+            fileListSerializer = ToDoItemFileSerializer(fileList, many=True)
+            responseData = taskSerializer.data
+            responseData['files'] = fileListSerializer.data
+            return Response(responseData)
+        message = {'detail': 'Item no. '+str(item_id)+ " does not exist"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail':'We can\'t process your request'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -157,10 +179,9 @@ def DownloadTaskFile(request):
             localFile = open(settings.MEDIA_ROOT+serializedFile.data['file'],"rb")
             response = HttpResponse(localFile, content_type='')
             response['Content-Type'] = "application/octet-stream"
-            response["Content-Disposition"] = f"attachment; filename={str(file.file).split('/')[-1]}"
-            # response["Content-Type"] = "application/octet-stream"
+            response["Content-Disposition"] = f"attachment; filename={file.get_file()}"
             return response
-    message = {'message':'No Authorization provided'}
+    message = {'detail':'We can\'t process your request'}
     return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -177,9 +198,9 @@ def DeleteaTaskFile(request):
         file = ToDoItemFile.objects.get(pk = file_id)
         if file in taskFiles:
             file.delete()
-            message = {'message': 'Item no. '+str(task_id)+ " was deleted successfully!"}
+            message = {'detail': 'Item no. '+str(task_id)+ " was deleted successfully!"}
             return Response(message, status=status.HTTP_200_OK)
-    message = {'message': "No Authorization provided"}
+    message = {'detail': "We can\'t process your request"}
     return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -214,7 +235,7 @@ def ReplaceTask(request):
         getDatabaseTask.save()
         message = {"message":"Data has been updates successfully"}
         return Response(message, status=status.HTTP_200_OK)
-    message = {'message': "No Authorization provided"}
+    message = {'detail': "We can\'t process your request"}
     return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
@@ -289,7 +310,7 @@ def changeEmail(request):
         user.save()
         serializedUser = UserSerializer(user, many = False)
         return Response(serializedUser.data)
-    message = {'message': "No Authorization provided"}
+    message = {'detail': "We can\'t process your request"}
     return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -301,7 +322,7 @@ def changePassword(request):
         user.save()
         message = {"message": "Password changes successfully!"}
         return Response(message, status=status.HTTP_200_OK)
-    message = {'message': "No Authorization provided"}
+    message = {'detail': "We can\'t process your request"}
     return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -319,7 +340,7 @@ def passwordForgot(request):
                                     user.email], fail_silently=False)
             message = {"message": "Email has been sent successfully!"}
             return Response(message, status=status.HTTP_200_OK)
-    message = {'message': "No Authorization provided"}
+    message = {'detail': "We can\'t process your request"}
     return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -334,5 +355,5 @@ def resetPassword(request):
         user.save()
         message = {"message": "Password changed successfully!"}
         return Response(message, status=status.HTTP_200_OK)
-    message = {'message': "No Authorization provided"}
+    message = {'detail': "We can\'t process your request"}
     return Response(message, status=status.HTTP_400_BAD_REQUEST)

@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import axios from "axios";
-import { Row, Col } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import {Row, Col} from "react-bootstrap";
+import {useSelector, useDispatch} from "react-redux";
 import {
 	setChangingStatus,
 	setIsCompletedStatus,
@@ -10,18 +10,28 @@ import {
 	setShowModalStatus,
 } from "../../store/TasksListReducer";
 import "./ToDoList.css";
-function ToDoTask({ taskID }) {
-	const tasksList = useSelector((state) => state.tasks);
-	const task = tasksList.filter((task) => task.id == taskID)[0];
-	const userData = useSelector((state) => state.login);
 
+function ToDoTask({task}) {
+	const userData = useSelector((state) => state.login);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [showErrorMessage, setShowErrorMessage] = useState(false)
+	let showErrorTimeout
 	const dispatch = useDispatch();
 
-	function showDeleteButtonHandler(id) {
-		dispatch(setShowDeleteButtonStatus({ id, status: true }));
+	function showErrorModalHandler(message) {
+		setErrorMessage(message);
+		setShowErrorMessage(true)
+		showErrorTimeout = setTimeout(() => {
+			setShowErrorMessage(false)
+		}, 2500)
 	}
+
+	function showDeleteButtonHandler(id) {
+		dispatch(setShowDeleteButtonStatus({id, status: true}));
+	}
+
 	function hideDeleteButtonHandler(id) {
-		dispatch(setShowDeleteButtonStatus({ id, status: false }));
+		dispatch(setShowDeleteButtonStatus({id, status: false}));
 	}
 
 	function setItemCompletedHandler(id) {
@@ -32,22 +42,21 @@ function ToDoTask({ taskID }) {
 					Authorization: "Bearer " + userData.token,
 				},
 			};
-			const body = { id };
-			const response = await axios.post(
-				"todolist/changecompleted",
-				body,
-				config
-			);
-			if (response.request.status == 200) {
-				dispatch(setChangingStatus({ id, status: true }));
+			const body = {id};
+			try {
+				const response = await axios.post("todolist/changecompleted", body, config);
+				dispatch(setChangingStatus({id, status: true}));
 				const setCompletedTimeout = setTimeout(() => {
-					dispatch(setChangingStatus({ id, status: false }));
+					dispatch(setChangingStatus({id, status: false}));
 					dispatch(setIsCompletedStatus(id));
-					dispatch(setShowDeleteButtonStatus({ id, status: false }));
+					dispatch(setShowDeleteButtonStatus({id, status: false}));
 				}, 500);
 				return () => clearTimeout(setCompletedTimeout);
+			} catch (e) {
+				if (e.response) showErrorModalHandler(e.response.data.detail)
 			}
 		}
+
 		changeCompletedStatusRequest();
 	}
 
@@ -59,17 +68,20 @@ function ToDoTask({ taskID }) {
 					Authorization: "Bearer " + userData.token,
 				},
 			};
-			const body = { id };
+			const body = {id};
 			const response = await axios.post("todolist/delete", body, config);
-			if (response.request.status == 200) {
+			if (response.request.status === 200) {
 				dispatch(deleteTask(id));
 			}
 		}
+
 		DeleteItemRequest();
 	}
+
 	function toggleTaskModalStatus() {
 		dispatch(setShowModalStatus(task.id));
 	}
+
 	return (
 		<div>
 			<div
@@ -80,7 +92,7 @@ function ToDoTask({ taskID }) {
 				onMouseLeave={() => hideDeleteButtonHandler(task.id)}
 			>
 				<Row className="row-fullwidth">
-					<Col md={1} className="col">
+					<Col lg={1} md={1} className="col">
 						{(((!task.isCompleted && task.changingStatus) ||
 							(task.isCompleted && !task.changingStatus)) && (
 							<i
@@ -90,7 +102,7 @@ function ToDoTask({ taskID }) {
 								className={`fas fa-check-circle todolist-item-circle ${
 									task.changingStatus && "disable-cursor"
 								}`}
-							></i>
+							/>
 						)) || (
 							<i
 								onClick={() => {
@@ -99,10 +111,10 @@ function ToDoTask({ taskID }) {
 								className={`fas fa-circle todolist-item-circle ${
 									task.changingStatus && "disable-cursor"
 								}`}
-							></i>
+							/>
 						)}
 					</Col>
-					<Col md={8} className="col" onClick={toggleTaskModalStatus}>
+					<Col lg={8} md={8} className="col" onClick={toggleTaskModalStatus}>
 						<div
 							className={`todolist-item-title ${
 								(task.isCompleted && task.changingStatus && "strike-reverse") ||
@@ -112,7 +124,7 @@ function ToDoTask({ taskID }) {
 							{task.title}
 						</div>
 					</Col>
-					<Col md={3} className="col right-section">
+					<Col lg={3} md={3} className="col right-section">
 						<div
 							className={`todolist-item-created-date ${
 								task.showDeleteBtn ? "date-hover" : ""
@@ -125,7 +137,7 @@ function ToDoTask({ taskID }) {
 							className={`fas fa-trash todolist-item-trashcan ${
 								task.showDeleteBtn ? "trashcan-hover" : ""
 							}`}
-						></i>
+						/>
 					</Col>
 				</Row>
 			</div>
