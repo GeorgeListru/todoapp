@@ -1,15 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+import os
 
 def profile_directory_path(instance, filename):
-    return 'user_{0}/profile/{1}'.format(instance.user.id, filename)
+    print(filename.split('/')[-1])
+    return 'user_{0}/profile/{1}'.format(instance.user.id, "Avatar."+instance.get_avatar_type())
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
     avatar = models.ImageField(default="default_avatar.png", upload_to=profile_directory_path)
 
     def __str__(self):
         return "Profile: " + self.user.username
+    def get_avatar_name(self):
+        return os.path.basename(self.avatar.path)
+    def get_avatar_path(self):
+        return self.avatar.path
+    def get_avatar_type(self):
+        return str(os.path.basename(self.avatar.path)).split('.')[-1]
 
 class ToDoItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)

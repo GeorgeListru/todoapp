@@ -83,6 +83,29 @@ hr {
   color: white;
 }
 
+.Modal-Window {
+  min-height: 5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 23%;
+  background-color: #219653;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  opacity: 1;
+  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.Modal-ChangesLoading {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.4rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  opacity: 0.5;
+  color: white;
+}
+
 .text-input:focus, .password-input:focus {
   background-color: #6fcf97;
   color: black;

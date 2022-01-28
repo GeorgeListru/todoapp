@@ -4,10 +4,9 @@ import axios from "axios";
 import {Row, Col} from "react-bootstrap";
 import "./TaskShowModal.css";
 import {useSelector, useDispatch} from "react-redux";
-import {setShowModalStatus, replaceTask} from "../../store/TasksListReducer";
+import {replaceTask} from "../../store/TasksListReducer";
 import FormatDate from "../../functions/FormatDate";
 import FormatFileName from "../../functions/FormatFileName";
-import FileDownload from "js-file-download";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 function TaskShowModal() {

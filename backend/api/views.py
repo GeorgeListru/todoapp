@@ -16,6 +16,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.core import files
 from PIL import Image
 import base64
@@ -166,42 +167,54 @@ def GetToDoListItem(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def DownloadTaskFile(request):
-    user = request.user
-    file_id = request.data['file_id']
-    task_id = request.data['task_id']
-    todoList=ToDoItem.objects.filter(user=user)
-    task = ToDoItem.objects.get(pk=task_id)
-    if task in todoList:
-        taskFiles = ToDoItemFile.objects.filter(toDoItem = task)
-        file = ToDoItemFile.objects.get(pk = file_id)
-        if file in taskFiles:
-            serializedFile = ToDoItemFileSerializer(file)
-            localFile = open(settings.MEDIA_ROOT+serializedFile.data['file'],"rb")
-            response = HttpResponse(localFile, content_type='')
-            response['Content-Type'] = "application/octet-stream"
-            response["Content-Disposition"] = f"attachment; filename={file.get_file()}"
-            return response
-    message = {'detail':'We can\'t process your request'}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = request.user
+        file_id = request.data['file_id']
+        task_id = request.data['task_id']
+        todoList=ToDoItem.objects.filter(user=user)
+        task = ToDoItem.objects.get(pk=task_id)
+        if task in todoList:
+            taskFiles = ToDoItemFile.objects.filter(toDoItem = task)
+            file = ToDoItemFile.objects.get(pk = file_id)
+            if file in taskFiles:
+                serializedFile = ToDoItemFileSerializer(file)
+                localFile = open(file.get_file_path(),"rb")
+                response = HttpResponse(localFile, content_type='')
+                response['Content-Type'] = "application/octet-stream"
+                response["Content-Disposition"] = f"attachment; filename={file.get_file_name()}"
+                return response
+            message = {'detail': 'File no. '+str(file_id)+ " does not exist"}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        message = {'detail': 'File no. '+str(file_id)+ " does not exist"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail':'We can\'t process your request'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def DeleteaTaskFile(request):
-    user = request.user
-    file_id = request.data['file_id']
-    task_id = request.data['task_id']
-    todoList=ToDoItem.objects.filter(user=user)
-    task = ToDoItem.objects.get(pk=task_id)
-    if task in todoList:
-        taskFiles = ToDoItemFile.objects.filter(toDoItem = task)
-        file = ToDoItemFile.objects.get(pk = file_id)
-        if file in taskFiles:
-            file.delete()
-            message = {'detail': 'Item no. '+str(task_id)+ " was deleted successfully!"}
-            return Response(message, status=status.HTTP_200_OK)
-    message = {'detail': "We can\'t process your request"}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+def DeleteTaskFile(request):
+    try:
+        user = request.user
+        file_id = request.data['file_id']
+        task_id = request.data['task_id']
+        todoList=ToDoItem.objects.filter(user=user)
+        task = ToDoItem.objects.get(pk=task_id)
+        if task in todoList:
+            taskFiles = ToDoItemFile.objects.filter(toDoItem = task)
+            file = ToDoItemFile.objects.get(pk = file_id)
+            if file in taskFiles:
+                file.delete()
+                message = {'detail': 'Item no. '+str(task_id)+ " was deleted successfully!"}
+                return Response(message, status=status.HTTP_200_OK)
+            message = {'detail': 'File no. '+str(file_id)+ " does not exist"}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        message = {'detail': 'Item no. '+str(file_id)+ " does not exist"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail': "We can\'t process your request"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -220,44 +233,52 @@ def UploadTaskFile(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def ReplaceTask(request):
-    user = request.user
-    task = request.data
-    todoList=ToDoItem.objects.filter(user=user)
-    getDatabaseTask = ToDoItem.objects.get(pk=task["id"])
-    if getDatabaseTask in todoList:
-        getDatabaseTask.title=task["title"]
-        getDatabaseTask.notes=task['notes']
-        getDatabaseTask.isCompleted=task['isCompleted']
-        if(task['isCompleted']):
-            getDatabaseTask.completedAt=timezone.now()
-        else:
-            getDatabaseTask.completedAt=None
-        getDatabaseTask.save()
-        message = {"message":"Data has been updates successfully"}
+    try:
+        user = request.user
+        task = request.data
+        todoList=ToDoItem.objects.filter(user=user)
+        getDatabaseTask = ToDoItem.objects.get(pk=task["id"])
+        if getDatabaseTask in todoList:
+            getDatabaseTask.title=task["title"]
+            getDatabaseTask.notes=task['notes']
+            getDatabaseTask.isCompleted=task['isCompleted']
+            if(task['isCompleted']):
+                getDatabaseTask.completedAt=timezone.now()
+            else:
+                getDatabaseTask.completedAt=None
+            getDatabaseTask.save()
+            message = {"detail":"Data has been updates successfully"}
+            return Response(message, status=status.HTTP_200_OK)
+        message = {'detail': 'Item no. '+str(file_id)+ " does not exist"}
         return Response(message, status=status.HTTP_200_OK)
-    message = {'detail': "We can\'t process your request"}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail': "We can\'t process your request"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def GetProfileAvatar(request):
-    user = request.user
-    profile = Profile.objects.filter(user=user)[0]
-    serializedProfile = ProfileSerializer(profile, many=False)
-    avatar = serializedProfile.data['avatar']
-    localImage = open(settings.MEDIA_ROOT+avatar, "rb")
-    localImageBase64 = base64.b64encode(localImage.read())
-    response = HttpResponse(localImageBase64)
-    response['Content-Type'] = "image/png"
-    response['Cache-Control'] = "max-age=0"
-    return response
+    try:
+        user = request.user
+        profile = Profile.objects.filter(user=user)[0]
+        serializedProfile = ProfileSerializer(profile, many=False)
+        avatar = serializedProfile.data['avatar']
+        localImage = open(settings.MEDIA_ROOT+avatar, "rb")
+        localImageBase64 = base64.b64encode(localImage.read())
+        response = HttpResponse(localImageBase64)
+        response['Content-Type'] = "image/"+profile.get_avatar_type()
+        response['Cache-Control'] = "max-age=0"
+        return response
+    except:
+        message = {'detail': "We can\'t process your request"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-def save_temp_image_from_base64(imageString, user):
+def save_temp_image_from_base64(imageString, user, filetype):
     if not os.path.exists(settings.TEMP):
         os.mkdir(settings.TEMP)
     if not os.path.exists(settings.TEMP+'/user'+str(user.pk)):
         os.mkdir(settings.TEMP+'/user'+str(user.pk))
-    url = os.path.join(settings.TEMP+'/user'+str(user.pk), 'TEMP_PROFILE_IMG.png')
+    url = os.path.join(settings.TEMP+'/user'+str(user.pk), 'TEMP_PROFILE_IMG.'+filetype.replace('image/',''))
     storage = FileSystemStorage(location=url)
     image = base64.b64decode(imageString)
     file_to_save = open(url , 'wb+')
@@ -268,92 +289,124 @@ def save_temp_image_from_base64(imageString, user):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def SaveProfileAvatar(request):
-    user = request.user
-    data = request.data
-    profile = Profile.objects.filter(user=user)[0]
-    
-    base64Image = data['image'].replace('data:image/png;base64,', '')
-    saved_image_url = save_temp_image_from_base64(base64Image, user)
-    image = cv2.imread(saved_image_url)
+    try:
+        user = request.user
+        data = request.data
+        filetype = data.get('filetype')
+        filename = data.get('filename')
+        file = data.get('file')
 
-    cropX = int(float(str(data['cropX'])))
-    cropY = int(float(str(data['cropY'])))
-    cropWidth = int(float(str(data['cropWidth'])))
-    cropHeight = int(float(str(data['cropHeight'])))
-    print(cropX, cropY, cropWidth, cropHeight)
-    if cropX < 0: cropX = 0
-    if cropY < 0: cropY = 0
+        profile = Profile.objects.filter(user=user)[0]
 
-    croppedImage = image[cropY: cropY + cropHeight, cropX: cropX + cropWidth]
-    cv2.imwrite(saved_image_url, croppedImage)
-    profile.avatar.delete()
-    profile.avatar = files.File(open(saved_image_url, 'rb'))
-    profile.save()
-    os.remove(saved_image_url)
+        base64Image = data['image'].replace(f'data:{filetype};base64,', '')
+        saved_image_url = save_temp_image_from_base64(base64Image, user, filetype)
+        image = cv2.imread(saved_image_url)
 
-    serializedProfile = ProfileSerializer(profile, many=False)
-    avatar_location = serializedProfile.data['avatar']
-    
-    localImage = open(settings.MEDIA_ROOT+avatar_location, "rb")
-    localImageBase64 = base64.b64encode(localImage.read())
-    response = HttpResponse(localImageBase64)
-    response['Content-Type'] = "image/png"
-    response['Cache-Control'] = "max-age=0"
-    return response
+        cropX = int(data['cropX'])
+        cropY = int(data['cropY'])
+        cropWidth = int(data['cropWidth'])
+        cropHeight = int(data['cropHeight'])
+        if cropX < 0: cropX = 0
+        if cropY < 0: cropY = 0
+
+        croppedImage = image[cropY: cropY + cropWidth, cropX: cropX + cropWidth]
+        cv2.imwrite(saved_image_url, croppedImage)
+        profile.avatar.delete()
+        profile.avatar = files.File(open(saved_image_url, 'rb'))
+        profile.save()
+        os.remove(saved_image_url)
+
+        serializedProfile = ProfileSerializer(profile, many=False)
+        avatar_location = profile.get_avatar_path()
+
+        localImage = open(avatar_location, "rb")
+        localImageBase64 = base64.b64encode(localImage.read())
+        response = HttpResponse(localImageBase64)
+        response['Content-Type'] = "image/"+profile.get_avatar_type()
+        response['Cache-Control'] = "max-age=0"
+        return response
+    except:
+        message = {'detail': "We can\'t process your request"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def changeEmail(request):
-    user = request.user
-    if user.check_password(request.data.get('password')):
-        user.email = request.data.get('newEmail')
-        user.save()
-        serializedUser = UserSerializer(user, many = False)
-        return Response(serializedUser.data)
-    message = {'detail': "We can\'t process your request"}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = request.user
+        if user.check_password(request.data.get('password')):
+            user.email = request.data.get('newEmail')
+            user.save()
+            serializedUser = UserSerializer(user, many = False)
+            return Response(serializedUser.data)
+        message = {'detail': "The entered password is incorrect"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail': "We can\'t process your request"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def changePassword(request):
-    user = request.user
-    if user.check_password(request.data.get('oldPassword')):
-        user.password = make_password(request.data.get('newPassword'))
-        user.save()
-        message = {"message": "Password changes successfully!"}
-        return Response(message, status=status.HTTP_200_OK)
-    message = {'detail': "We can\'t process your request"}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = request.user
+        old_password = user.get('oldPassword')
+        new_password = user.get('newPassword')
+        if user.check_password(old_password):
+            if CheckPassword(old_password):
+                user.password = make_password(new_password)
+                user.save()
+                message = {"detail": "Password changed successfully!"}
+                return Response(message, status=status.HTTP_200_OK)
+            message = {'detail': "8 characters (including 1 digit) required"}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        message = {'detail': "The old password is incorrect"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail': "We can\'t process your request"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def passwordForgot(request):
-    data=request.data
-    email = data.get('email')
-    if User.objects.filter(email=email).exists():
-        user = User.objects.filter(email=email)[0]
-        if user.email == email:
+    try:
+        data=request.data
+        email = data.get('email')
+        if User.objects.filter(email=email).exists():
+            user = User.objects.filter(email=email)[0]
             token = default_token_generator.make_token(user)
             website=data.get('frontend_website')
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             url = website + "/resetpassword/" +uid+'/'+token
-            mail_sent = send_mail("Password Reset", url, settings.EMAIL_HOST_USER, [
-                                    user.email], fail_silently=False)
-            message = {"message": "Email has been sent successfully!"}
+
+            template = render_to_string('PasswordResetTemplate.html', {'name':user.username, 'reset_link':url})
+            mail_sent = send_mail(subject="todoapp | Reset your password", message=None, from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[user.email,], fail_silently=False, html_message=template)
+            message = {"detail": "Email has been sent successfully!"}
             return Response(message, status=status.HTTP_200_OK)
-    message = {'detail': "We can\'t process your request"}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        message = {'detail': "The entered email does not exist"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail': "We can\'t process your request"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def resetPassword(request):
-    data=request.data
-    password = data.get('password')
-    uid = force_str(urlsafe_base64_decode(data.get('uid')))
-    token = data.get('token')
-    user = User.objects.get(pk=uid)
-    if default_token_generator.check_token(user, token):
-        user.password = make_password(password)
-        user.save()
-        message = {"message": "Password changed successfully!"}
+    try:
+        data=request.data
+        password = data.get('password')
+        uid = force_str(urlsafe_base64_decode(data.get('uid')))
+        token = data.get('token')
+        user = User.objects.get(pk=uid)
+        if default_token_generator.check_token(user, token):
+            if CheckPassword(password):
+                user.password = make_password(password)
+                user.save()
+                message = {"detail": "Password changed successfully!"}
+                return Response(message, status=status.HTTP_200_OK)
+            message = {"detail": "8 characters (including 1 digit) required"}
+            return Response(message, status=status.HTTP_200_OK)
+        message = {"detail": "The provided authorization is not valid"}
         return Response(message, status=status.HTTP_200_OK)
-    message = {'detail': "We can\'t process your request"}
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        message = {'detail': "We can\'t process your request"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)

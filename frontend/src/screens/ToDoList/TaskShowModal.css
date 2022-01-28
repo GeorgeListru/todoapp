@@ -83,6 +83,29 @@ hr {
   color: white;
 }
 
+.Modal-Window {
+  min-height: 5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 23%;
+  background-color: #219653;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  opacity: 1;
+  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.Modal-ChangesLoading {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.4rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  opacity: 0.5;
+  color: white;
+}
+
 .text-input:focus, .change-title_Modal:focus {
   background-color: #6fcf97;
   color: black;
@@ -227,24 +250,14 @@ hr {
   }
 }
 .Modal-Window {
-  min-height: 5rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   width: 55%;
-  top: 23%;
-  background-color: #219653;
-  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
-  z-index: 2;
-  opacity: 1;
-  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .hiddenModal-Window {
   width: 49%;
   top: 20%;
   opacity: 0;
-  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
+  transition: all 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
 }
 
 .Modal_Content {
@@ -392,16 +405,6 @@ hr {
   margin-top: 1rem;
   width: 10rem;
   font-size: 1.2rem;
-}
-
-.Modal-ChangesLoading {
-  position: absolute;
-  left: 0.8rem;
-  bottom: 0.4rem;
-  font-family: "Dosis", sans-serif;
-  font-weight: 500;
-  opacity: 0.5;
-  color: white;
 }
 
 @media all and (max-width: 1000px) {

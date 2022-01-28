@@ -30,7 +30,8 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
 }
-.no-text-overflow{
+
+.no-text-overflow {
   white-space: nowrap;
   overflow: hidden;
 }
@@ -90,6 +91,29 @@ hr {
   background-color: #27ae60;
   padding: 0 1rem;
   transition: all 0.15s ease-in-out;
+  color: white;
+}
+
+.Modal-Window {
+  min-height: 5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 23%;
+  background-color: $green-color;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  opacity: 1;
+  transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.Modal-ChangesLoading {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.4rem;
+  font-family: "Dosis", sans-serif;
+  font-weight: 500;
+  opacity: 0.5;
   color: white;
 }
 

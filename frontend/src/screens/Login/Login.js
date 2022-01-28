@@ -52,7 +52,7 @@ function Login() {
 					token: data.token,
 				}
 				if (remember_me) dispatch(loginUserRemember(login_data))
-				else loginUserForget(login_data)
+				else dispatch(loginUserForget(login_data))
 				navigate("/");
 			} catch (e) {
 				if (e.response) {
@@ -70,7 +70,6 @@ function Login() {
 
 	}
 
-	console.log(userData)
 	return (
 		<div>
 			<div className="h1-header">SIGN IN</div>
